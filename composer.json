@@ -1,0 +1,17 @@
+{
+    "name": "egor/cms-blog",
+    "description": "project cms",
+    "type": "project",
+    "authors": [
+        {
+            "name": "egor",
+            "email": "salomatinegor111@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4" : {"App\\": "src/App/" }
+    },
+    "require": {
+        "illuminate/database": "^7.21"
+    }
+}
