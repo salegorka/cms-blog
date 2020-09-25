@@ -1,0 +1,409 @@
+@font-face {
+    font-family: "Inconsolata";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Inconsolata"), url("../fonts/InconsolataUltraExpanded-Regular.ttf"); }
+
+@font-face {
+    font-family: "Playfair Display";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Playfair Display"), url("../fonts/PlayfairDisplay-Regular.ttf"); }
+
+@font-face {
+    font-family: "Ubuntu Light";
+    font-style: normal;
+    font-weight: 300;
+    src: local("Ubuntu-Light"), url("../fonts/Ubuntu-Light.ttf"); }
+
+html {
+    font-size: 18px;
+}
+
+@media (max-width: 576px) {
+    html {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 720px) and (min-width: 577px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+.row {
+    margin : 0;
+}
+
+.user-panel-container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.user-panel {
+    align-content: center;
+}
+
+.user-panel-username {
+    font: 400 1.25rem/1.25rem "Playfair Display";
+    color: #626262;
+}
+
+.user-panel-icon {
+    width: 40px;
+    height: 30px;
+    position: relative;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .5s ease-in-out;
+    -moz-transition: .5s ease-in-out;
+    -o-transition: .5s ease-in-out;
+    transition: .5s ease-in-out;
+    cursor: pointer;
+}
+
+.user-panel-icon span {
+    display: block;
+    position: absolute;
+    left: 0;
+    height: 6px;
+    width: 100%;
+    border-radius: 9px;
+    background-color: #626262;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: .25s ease-in-out;
+    -moz-transition: .25s ease-in-out;
+    -o-transition: .25s ease-in-out;
+    transition: .25s ease-in-out;
+}
+
+.user-panel-icon span:nth-child(1) {
+    top: 0px;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -o-transform-origin: left center;
+    transform-origin: left center;
+}
+
+.user-panel-icon span:nth-child(2) {
+    top: 12px;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -o-transform-origin: left center;
+    transform-origin: left center;
+}
+
+.user-panel-icon span:nth-child(3) {
+    top: 24px;
+    -webkit-transform-origin: left center;
+    -moz-transform-origin: left center;
+    -o-transform-origin: left center;
+    transform-origin: left center;
+}
+
+.user-panel-icon.open span:nth-child(1) {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    top: -4px;
+    left: 6px;
+}
+
+.user-panel-icon.open span:nth-child(2) {
+    width: 0%;
+    opacity: 0;
+}
+
+.user-panel-icon.open span:nth-child(3) {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    top: 24px;
+    left: 6px;
+}
+
+.user-panel-username {
+    display: block;
+}
+
+.user-menu {
+    width: 100%;
+    margin: 0;
+    display: none;
+}
+
+.user-menu-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.user-menu-el {
+    display: block;
+    padding: 10px 0 10px 0;
+    background-color: #cccccc;
+    border-bottom: #dddddd 1px solid;
+    text-align: center;
+    cursor: pointer;
+}
+
+.user-menu-link {
+    text-decoration: none;
+    font: 400 1.2rem/1.2rem "Playfair Display";
+    color: #000000;
+    display: block;
+}
+
+.user-menu-el:hover {
+    background-color: #cd853f;
+}
+
+.user-menu-link:hover {
+    text-decoration: none;
+    color: #000000;
+}
+
+
+.cross {
+    display: none;
+}
+
+.header {
+    width: 90%;
+    margin: 10px auto;
+}
+
+.logo {
+    font: 400 1.5rem/1.5rem "Inconsolata";
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #000000;
+    text-decoration: none;
+}
+
+.logo:hover {
+    text-decoration: none;
+    color: #cd853f;
+}
+
+.login-link {
+    font: 400 0.9rem/0.9rem "Playfair Display";
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #626262;
+}
+
+.login-link:hover {
+    color: #cd853f;
+    text-decoration:none;
+}
+
+.menu-container-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.menu-container-el {
+    text-align: center;
+    height: 36px;
+    margin: 0 5px;
+}
+
+.menu-container-link {
+    font: 400 0.9rem/0.9rem "Playfair Display";
+    text-decoration: none;
+    color: #626262;
+    display: block;
+}
+
+.menu-container-link:hover {
+    color: #cd853f;
+    text-decoration:none;
+}
+
+.article {
+    width: 90%;
+    margin: 0 auto;
+    border: 0;
+    box-sizing: border-box;
+}
+
+.article-img {
+    border-radius: 8px;
+}
+
+.article-header {
+    font: 400 1.5rem/1.5rem "Playfair Display";
+    color: #626262;
+    margin: 20px 0;
+}
+
+.article-text {
+    font: 400 1rem/1.5rem "Playfair Display";
+    color: #626262;
+}
+
+.article-body
+{
+    width: 90%;
+    margin: 0 auto;
+}
+
+.article-button {
+    width: 150px;
+    margin: 15px auto;
+    box-sizing: border-box;
+    display: block;
+    font: 300 0.9rem/0.9rem "Ubuntu Light";
+    background-color: #cd853f;
+    color: #ffffff;
+    border: 1px solid #cd853f;
+    border-radius: 10px;
+    padding: 15px 10px;
+    text-align: center;
+}
+
+.article-button:hover {
+    background-color: #ffffff;
+    color: #222222;
+    border: 1px solid #cd853f;
+    text-decoration: none;
+}
+
+.article-button:active {
+    background-color: #cd853f;
+    color: #ffffff;
+    border: 1px solid #cd853f;
+}
+
+.article-pagination-link {
+    color: #cd853f;
+}
+
+.article-pagination-link:hover {
+    color: #626262;
+}
+
+.side-container {
+    width: 90%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 20px 20px;
+    border: 3px solid #ffb960;
+    border-radius: 25px;
+}
+
+.side-header {
+    font: 400 1.5rem/1.5rem "Playfair Display";
+    color: #444444;
+}
+
+.side-text {
+    font: 400 1rem/1.5rem "Playfair Display";
+    color: #626262;
+}
+
+.side-posts-header {
+    font: 400 1.5rem/1.5rem "Playfair Display";
+    color: #333333;
+}
+
+.side-posts-link {
+    font: 400 1rem/1.5rem "Playfair Display";
+    color: #626262;
+}
+
+.side-posts-link:hover {
+    text-decoration: none;
+    color: #cd853f;
+}
+
+.signup-container {
+    height: 250px;
+    padding: 20px 0;
+    background-color: #f0f0f0;
+}
+
+.signup-form {
+
+}
+
+.signup-label {
+    font: 400 1.5rem/1.5rem "Playfair Display";
+    color: #333333;
+}
+
+.signup-input {
+    margin: 30px 0 10px 0;
+}
+
+.button {
+    background-color: #cd8537;
+    border: 1px solid #cd853f;
+    padding: 10px 10px;
+    border-radius: 10px;
+    color: #ffffff;
+    font: 300 0.9rem/0.9rem "Ubuntu Light";
+}
+
+.button:hover {
+    background-color: #ffffff;
+    color: #222222;
+    border: 1px solid #cd853f;
+}
+
+.button:active {
+    background-color: #cd853f;
+    color: #ffffff;
+    border: 1px solid #cd853f;
+}
+
+.button:focus {
+    outline: none;
+}
+
+.login-form {
+    width: 100%;
+    height: 100vh;
+}
+
+.login-form__content {
+    width: 320px;
+}
+
+.login-form__info-text {
+    text-align: center;
+}
+
+.login-form__error-text {
+    color: red;
+    text-align: center;
+}
+
+.reg-form {
+    width: 100%;
+    height: 100vh;
+}
+
+.reg-form__content {
+    width: 320px;
+}
+
+.reg-form__info-text {
+    text-align: center;
+}
+
+.reg-form__error-text {
+    color: red;
+    text-align: center;
+}

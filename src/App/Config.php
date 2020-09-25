@@ -23,7 +23,7 @@ final class Config
 
     public function get($config, $default = null)
     {
-        return array_get($this->configs, $config);
+        return array_get($this->configs, $config, $default);
     }
 
 }

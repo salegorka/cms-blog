@@ -8,23 +8,17 @@ use App\Model\Book;
 class Controller
 {
     private $activeViewName;
+    private $data;
 
-    public function __construct($activeViewName)
+    public function __construct($activeViewName, $data = NULL)
     {
         $this->activeViewName = $activeViewName;
+        $this->data = $data;
     }
 
-    public function render() {
-        return new View($this->activeViewName, $this->loadData());
-    }
-
-    public function loadData()
+    public function render()
     {
-        if ($this->activeViewName == 'index') {
-            return ['title' => 'IndexPage'];
-        } elseif ($this->activeViewName == 'books') {
-            $books = Book::all();
-            return $books;
-        }
+        return new View($this->activeViewName, $this->data);
     }
+
 }

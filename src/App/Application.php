@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
-use App\Config;
 use App\Interfaces\Renderable;
 
 class Application
@@ -18,12 +17,13 @@ class Application
 
     public function run()
     {
+        $view = null;
+
         try {
             $view = $this->router->dispatch();
         }
         catch (\Exception $e) {
             $this->renderException($e);
-            return 0;
         }
 
         if ($view instanceof Renderable) {
