@@ -15,6 +15,16 @@ $router->get('/login', function () {
     $controller = new App\Controller('login');
     return $controller->render();
 });
+$router->post('/login', function () {
+    try {
+        $result = App\Services\Auth::authUser($_POST['loginEmailInput'], $_POST['loginPassInput']);
+        header('Location: /');
+    } catch (Exception $e) {
+        $error = $e->getMessage();
+        $controller = new App\Controller('login', ['error' => $error]);
+        return $controller->render();
+    }
+});
 $router->get('/reg', function () {
     $controller = new App\Controller('reg');
     return $controller->render();

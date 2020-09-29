@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<form action="#" class="login-form d-flex justify-content-center align-items-center">
+<form action="/login" method="post" class="login-form d-flex justify-content-center align-items-center">
     <div class="login-form__content d-flex flex-column align-items-center">
         <a href="/" class="logo d-flex justify-content-sm-start justify-content-center align-items-center">møviebløg</a>
         <div class="login-form__info">
@@ -20,15 +20,19 @@
         </div>
         <div class="form-group">
             <label for="loginEmailInput" class="login-form__label">Email</label>
-            <input type="email" class="form-control" id="loginEmailInput">
+            <input type="email" class="form-control" id="loginEmailInput" name="loginEmailInput"
+            value="<?= !empty($_POST) ? $_POST['loginEmailInput'] : '' ?>">
         </div>
         <div class="form-group">
             <label for="loginPassInput" class="login-form__label">Пароль</label>
-            <input type="password" class="form-control" id="loginPassInput">
+            <input type="password" class="form-control" id="loginPassInput" name="loginPassInput"
+                   value="<?= !empty($_POST) ? $_POST['loginPassInput'] : '' ?>">
         </div>
+        <?php if (!empty($data['error'])) : ?>
         <div class="login-form__error">
-            <p class="login-form__error-text">Очень длинное сообщение о непростой, загадочной ошибке</p>
+            <p class="login-form__error-text"><?= $data['error'] ?></p>
         </div>
+        <? endif; ?>
         <button class="login-form__button button" type="submit">Войти</button>
     </div>
 </form>

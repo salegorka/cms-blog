@@ -22,6 +22,8 @@ class Reg {
 
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
+
+        //Переписать через create
         $newUser = new User();
         $newUser->email = $email;
         $newUser->username = $username;
