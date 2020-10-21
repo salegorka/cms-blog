@@ -5,7 +5,8 @@ namespace App\Services;
 use App\Exception\AuthException;
 use App\Model\User;
 
-class Auth {
+class Auth
+{
 
     public static function authUser($email, $password)
     {
@@ -25,10 +26,21 @@ class Auth {
         $role = $user->role;
 
         $_SESSION['isUserAuthorized'] = true;
-        $_SESSION['email'] = $email;
         $_SESSION['rights'] = $role->id;
+        $_SESSION['username'] = $user->username;
+        $_SESSION['userId'] = $user->id;
 
         return true;
+    }
+
+    public static function logout()
+    {
+
+        $_SESSION['isUserAuthorized'] = false;
+        $_SESSION['rights'] = null;
+        $_SESSION['username'] = null;
+        $_SESSION['userId'] = null;
+
     }
 
 }

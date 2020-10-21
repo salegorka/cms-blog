@@ -43,7 +43,7 @@
             <p class="reg-form__error-text"><?= $data['error'] ?></p>
         </div>
         <?php endif; ?>
-        <button class="reg-form__button button" type="submit">Зарегистрироваться</button>
+        <button class="reg-form__button blog-button" type="submit">Зарегистрироваться</button>
     </div>
 </form>
 

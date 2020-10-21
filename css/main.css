@@ -347,7 +347,7 @@ html {
     margin: 30px 0 10px 0;
 }
 
-.button {
+.blog-button {
     background-color: #cd8537;
     border: 1px solid #cd853f;
     padding: 10px 10px;
@@ -356,19 +356,19 @@ html {
     font: 300 0.9rem/0.9rem "Ubuntu Light";
 }
 
-.button:hover {
+.blog-button:hover {
     background-color: #ffffff;
     color: #222222;
     border: 1px solid #cd853f;
 }
 
-.button:active {
+.blog-button:active {
     background-color: #cd853f;
     color: #ffffff;
     border: 1px solid #cd853f;
 }
 
-.button:focus {
+.blog-button:focus {
     outline: none;
 }
 
@@ -406,4 +406,22 @@ html {
 .reg-form__error-text {
     color: red;
     text-align: center;
+}
+
+.blog-button-icon {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.blog-button-icon:hover {
+    outline: none;
+}
+
+.blog-button-icon:active {
+    outline: none;
+}
+
+.blog-button-icon:focus {
+    outline: none;
 }

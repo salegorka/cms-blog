@@ -33,7 +33,7 @@
             <p class="login-form__error-text"><?= $data['error'] ?></p>
         </div>
         <? endif; ?>
-        <button class="login-form__button button" type="submit">Войти</button>
+        <button class="login-form__button blog-button" type="submit">Войти</button>
     </div>
 </form>
 

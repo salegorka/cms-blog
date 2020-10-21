@@ -6,7 +6,8 @@ use App\Exception\AuthException;
 use App\Model\User;
 use App\Model\Role;
 
-class Reg {
+class Reg
+{
 
     public static function regNewUser($email, $username, $password, $passwordCheck)
     {
@@ -34,7 +35,7 @@ class Reg {
 
 
         $_SESSION['isUserAuthorized'] = true;
-        $_SESSION['email'] = $email;
+        $_SESSION['username'] = $username;
         $_SESSION['rights'] = 1;
 
         return true;
