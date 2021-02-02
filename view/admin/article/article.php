@@ -11,9 +11,6 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            <p id="deletingArticleName"></p>
-                        </div>
                         <div class="modal-footer">
                             <button type="button" class="blog-button" data-dismiss="modal">Отмена</button>
                             <button type="button" class="blog-button" id="buttonDeleteArticle">Удалить</button>
@@ -88,4 +85,4 @@
         </div>
 
     </div>
-<?php require VIEW_DIR . './layout/base/footer.php'; ?>
+<?php require VIEW_DIR . './admin/layout/footer.php'; ?>

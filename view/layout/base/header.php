@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" type="text/css" href="/css/main.css">
 
-    <title>Киноблог</title>
+    <title>Блог о книгах</title>
 
 </head>
 <body>
@@ -29,7 +29,7 @@
         </div>
         <div class="row user-menu">
             <ul class="user-menu-list">
-                <li class="user-menu-el"><a href="#" class="user-menu-link">Профиль</a></li>
+                <li class="user-menu-el"><a href="/profile" class="user-menu-link">Профиль</a></li>
                 <?php if($_SESSION['rights'] >= 2) : ?>
                     <li class="user-menu-el"><a href="/admin" class="user-menu-link">Управление сайтом</a></li>
                 <?php endif; ?>
@@ -38,17 +38,22 @@
         </div>
     <?php endif; ?>
     <header class="row header">
-        <div class="col-sm py-1 py-sm-0"><a href="/" class="logo d-flex justify-content-sm-start justify-content-center align-items-center">møviebløg</a></div>
+        <div class="col-sm py-1 py-sm-0"><a href="/" class="logo d-flex justify-content-sm-start justify-content-center align-items-center">litøbzør</a></div>
         <?php if(!(isset($_SESSION['isUserAuthorized']) && $_SESSION['isUserAuthorized'])) : ?>
             <div class="col-sm py-1 py-sm-0 login-container d-flex justify-content-center justify-content-sm-end align-items-center">
                 <a href="/login" class="login-link">Войти</a>
             </div>
         <?php endif; ?>
+        <?php $config = App\Config::getInstance();
+            $menu = $config->get('mainSettings.menu');
+        ?>
         <nav class="menu-container col-sm">
             <ul class="menu-container-list d-sm-flex justify-content-sm-between ">
-                <li class="menu-container-el d-flex align-items-center justify-content-center"><a class="menu-container-link" href="#">Link1</a></li>
-                <li class="menu-container-el d-flex align-items-center justify-content-center"><a class="menu-container-link" href="#">Link2</a></li>
-                <li class="menu-container-el d-flex align-items-center justify-content-center"><a class="menu-container-link" href="#">Link3</a></li>
+                <?php foreach($menu as $item): ?>
+                    <li class="menu-container-el d-flex align-items-center justify-content-center">
+                        <a class="menu-container-link" href="<?= "/page/" . $item['link'] ?>"><?= $item['name'] ?></a>
+                    </li>
+                <?php endforeach; ?>
             </ul>
         </nav>
     </header>

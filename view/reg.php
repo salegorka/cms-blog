@@ -14,7 +14,7 @@
 
 <form action="/reg" method="post" class="reg-form d-flex justify-content-center align-items-center">
     <div class="reg-form__content d-flex flex-column align-items-center">
-        <a href="/" class="logo d-flex justify-content-sm-start justify-content-center align-items-center">møviebløg</a>
+        <a href="/" class="logo d-flex justify-content-sm-start justify-content-center align-items-center">litøbzør</a>
         <div class="reg-form__info">
             <p class="reg-form__info-text">Если у вас уже есть аккаунт на нашем сайте <a class="text-link" href="/login">войдите</a></p>
         </div>
@@ -23,26 +23,40 @@
             <input type="email" class="form-control" id="regEmailInput" name="regEmailInput"
                    value="<?= !empty($_POST) ? $_POST['regEmailInput'] : '' ?>">
         </div>
+        <?php if (!empty($data['error']['regEmailInput'])) : ?>
+            <p class="reg-form__error-text"><?= $data['error']['regEmailInput'] ?></p>
+        <?php endif; ?>
         <div class="form-group">
             <label for="regUsernameInput" class="reg-form__label">Имя на сайте</label>
             <input type="text" class="form-control" id="regUsernameInput" name="regUsernameInput"
                    value="<?= !empty($_POST) ? $_POST['regUsernameInput'] : '' ?>">
         </div>
+        <?php if (!empty($data['error']['regUsernameInput'])) : ?>
+            <p class="reg-form__error-text"><?= $data['error']['regUsernameInput'] ?></p>
+        <?php endif; ?>
         <div class="form-group">
             <label for="regPassInput" class="reg-form__label">Пароль</label>
             <input type="password" class="form-control" id="regPassInput" name="regPassInput"
                    value="<?= !empty($_POST) ? $_POST['regPassInput'] : '' ?>">
         </div>
+        <?php if (!empty($data['error']['regPassInput'])) : ?>
+            <p class="reg-form__error-text"><?= $data['error']['regPassInput'] ?></p>
+        <?php endif; ?>
         <div class="form-group">
             <label for="regPassControlInput" class="reg-form__label">Пароль еще раз</label>
             <input type="password" class="form-control" id="regPassControlInput" name="regPassControlInput"
                    value="<?= !empty($_POST) ? $_POST['regPassControlInput'] : '' ?>">
         </div>
-        <?php if (!empty($data['error'])) : ?>
-        <div class="reg-form__error">
-            <p class="reg-form__error-text"><?= $data['error'] ?></p>
-        </div>
+        <?php if (!empty($data['error']['regPassControlInput'])) : ?>
+            <p class="reg-form__error-text"><?= $data['error']['regPassControlInput'] ?></p>
         <?php endif; ?>
+        <div class="form-group">
+            <input type="checkbox" class="form-check-input" id="regCheck" name="regCheck" value="1" <?= empty($_POST['regCheck']) ? '' : 'checked' ?>>
+            <label for="regCheck" class="reg-form__label form-check-label">Я согласен с <a href="/">правилами</a> сайта</label>
+            <?php if (!empty($data['error']['regCheck'])) : ?>
+                <p class="reg-form__error-text"><?= $data['error']['regCheck'] ?></p>
+            <?php endif; ?>
+        </div>
         <button class="reg-form__button blog-button" type="submit">Зарегистрироваться</button>
     </div>
 </form>

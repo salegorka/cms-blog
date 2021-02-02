@@ -14,7 +14,7 @@
 
 <form action="/login" method="post" class="login-form d-flex justify-content-center align-items-center">
     <div class="login-form__content d-flex flex-column align-items-center">
-        <a href="/" class="logo d-flex justify-content-sm-start justify-content-center align-items-center">møviebløg</a>
+        <a href="/" class="logo d-flex justify-content-sm-start justify-content-center align-items-center">litøbzør</a>
         <div class="login-form__info">
             <p class="login-form__info-text">Если у вас нет аккаунта на нашем сайте <a class="text-link" href="/reg">зарегистрируйтесь</a></p>
         </div>

@@ -11,6 +11,11 @@ class ArticleManager
 
     public function countArticles()
     {
+        return Article::where('shown', '=', 1)->count();
+    }
+
+    public function countArticlesAdmin()
+    {
         return Article::where('id', '!=', 0)->count();
     }
 
@@ -19,17 +24,32 @@ class ArticleManager
         return ceil($this->countArticles()/$chunk);
     }
 
+    public function countMaxPageAdmin($chunk)
+    {
+        return ceil($this->countArticlesAdmin()/$chunk);
+    }
+
     public function loadArticlesToPage($chunk, $page)
     {
-        $articles = Article::where('id', '!=', 0)->orderBy('created_at', 'desc')->skip(($page - 1) * $chunk)->take($chunk)->get();
-        //var_dump($articles->toArray())
+        $articles = Article::where('shown', '=', 1)->orderBy('created_at', 'desc')->skip(($page - 1) * $chunk)->take($chunk)->get();
         $articlesArr = [];
         foreach($articles as $article) {
             $tmpArr = $article->toArray();
             $tmpArr['author'] = $article->author->username;
             $articlesArr[] = $tmpArr;
         }
-        //var_dump($articlesArr);
+        return $articlesArr;
+    }
+
+    public function loadArticlesToAdminPage($chunk, $page)
+    {
+        $articles = Article::where('id', '!=', 0)->orderBy('created_at', 'desc')->skip(($page - 1) * $chunk)->take($chunk)->get();
+        $articlesArr = [];
+        foreach($articles as $article) {
+            $tmpArr = $article->toArray();
+            $tmpArr['author'] = $article->author->username;
+            $articlesArr[] = $tmpArr;
+        }
         return $articlesArr;
     }
 
@@ -44,6 +64,27 @@ class ArticleManager
         $article=$article->first();
 
         return $article->toArray();
+    }
+
+    public function loadArticleToView($id)
+    {
+        try {
+            $article = Article::findOrFail($id);
+        } catch(\Exception $e) {
+            throw new NotFoundException();
+        }
+
+        $data['article'] = $article->toArray();
+        $comments = $article->comments;
+        $commentsArr = [];
+        $comments->each(function ($comment) use (&$commentsArr) {
+            $commentsArr[] = ['id' => $comment->id, 'text' => $comment->text, 'date' => $comment->created_at->format('Y-m-d H:i:s'),
+                'username' => $comment->author->username, 'avatar' => $comment->author->avatar,
+                'approved' => $comment->approved];
+        });
+        $data['comments'] = $commentsArr;
+
+        return $data;
     }
 
     public function updateArticle($id, $data)
@@ -71,7 +112,20 @@ class ArticleManager
         return "Данные успшено сохранены";
     }
 
-    public function createNewArticle() {
+    public function showArticle($id) {
+        $article = Article::find($id);
+        $article->shown = true;
+        $article->save();
+    }
+
+    public function hideArticle($id) {
+        $article = Article::find($id);
+        $article->shown = false;
+        $article->save();
+    }
+
+    public function createNewArticle()
+    {
 
         $article = new Article();
 
@@ -79,6 +133,7 @@ class ArticleManager
         $article->text = 'Текст';
         $article->description = 'Описание';
         $article->img = '';
+        $article->shown = false;
 
         $currentUser = User::find($_SESSION['userId']);
         $article->author()->associate($currentUser);
@@ -88,10 +143,9 @@ class ArticleManager
 
     }
 
-    public function deleteArticle($id) {
-
+    public function deleteArticle($id)
+    {
         Article::destroy($id);
-
     }
 
 }

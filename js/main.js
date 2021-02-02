@@ -11,171 +11,237 @@ if (userPanel) {
     })
 }
 
-function contentSwitcher(currentContent)
-{
-    switch(currentContent) {
-        case 'name':
-            $('.article-content__name').html($('.article-editor').trumbowyg('html'))
-            break
-        case 'descr':
-            $('.article-content__description').html($('.article-editor').trumbowyg('html'))
-            break
-        case 'text':
-            $('.article-content__text').html($('.article-editor').trumbowyg('html'))
-            break
-    }
-}
+let profileEdit = document.querySelector(".profile-edit-form")
 
-let articleEditPanel = document.querySelector(".article-editor-page");
+if (profileEdit) {
+    console.log("Профиль");
 
-if (articleEditPanel) {
+    profileEdit.addEventListener('submit', function (evt) {
+        evt.preventDefault()
+        let formData = new FormData(profileEdit);
 
-    console.log("EditArticlePAgeStart")
+        $.ajax({
+            url: '/profile/edit',
+            method: 'POST',
+            xhrFields: {
+                withCredentials: true
+            },
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function(data) {
+                if (data.ok) {
+                    location.reload();
+                } else if (!(data.error === undefined)) {
+                    if (!(data.error.errorAbout === undefined)) {
+                        let formAnswer = document.querySelector(".profile-edit-form-about-answer")
+                        formAnswer.classList.remove("d-none")
+                        formAnswer.textContent = data.error.errorAbout
+                    }
+                    if(!(data.error.errorAvatar === undefined)) {
+                        let formAnswer = document.querySelector(".profile-edit-form-avatar-answer")
+                        formAnswer.classList.remove("d-none")
+                        formAnswer.textContent = data.error.errorAvatar
+                    }
 
-    $(function() {
-        $('.article-editor').trumbowyg({
-            btns: [
-                ['viewHTML'],
-                ['undo', 'redo'], // Only supported in Blink browsers
-                ['formatting'],
-                ['strong', 'em', 'del'],
-                ['superscript', 'subscript'],
-                ['link'],
-                ['insertImage'],
-                ['upload'],
-                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-                ['unorderedList', 'orderedList'],
-                ['horizontalRule'],
-                ['removeformat'],
-                ['fullscreen']
-            ],
-            plugins: {
-                upload: {
-                    //Реализовать загрузку картинок
                 }
+            },
+            error: function(jqXHR) {
+                console.log('error')
             }
-        });
-
-        $('.article-editor').trumbowyg('html', $('.article-content__name').html());
-        let currentContent = 'name';
-
-        $('#editor-name').click(function () {
-            contentSwitcher(currentContent);
-            $('.article-editor').trumbowyg('html', $('.article-content__name').html());
-            currentContent = 'name';
-        })
-
-        $('#editor-descr').click(function () {
-            contentSwitcher(currentContent);
-            $('.article-editor').trumbowyg('html', $('.article-content__description').html());
-            currentContent = 'descr';
-        })
-
-        $('#editor-text').click(function () {
-            contentSwitcher(currentContent);
-            $('.article-editor').trumbowyg('html', $('.article-content__text').html());
-            currentContent = 'text';
-        })
-
-        $('#editor-save').click(function () {
-
-            contentSwitcher(currentContent);
-
-            let data = {}
-
-            data.id = $('#editor-save').data('id')
-            data.name = $('.article-content__name').html()
-            data.descr = $('.article-content__description').html()
-            data.text = $('.article-content__text').html()
-
-            console.log(data)
-
-            $.ajax({
-                url: '/admin/article/edit',
-                xhrFields: {
-                    withCredentials: true
-                },
-                method: 'POST',
-                dataType: 'json',
-                data: data,
-                success: function(data) {
-                    $('.editor-control__answer').removeClass('d-none')
-                    $('.editor-control__answer').html(data.message)
-                },
-                error: function(jqXHR) {
-                    $('.editor-control__answer').removeClass('d-none')
-                    $('.editor-control__answer').html("Ошибка сохранения статьи. Обратитесь к администратору. Код ошибки: " + jqXHR.status)
-                }
-            })
-        })
-
-        $('#image-save').click(function () {
-
-            let data = {}
-
-            data.id = $('#editor-save').data('id')
-            data.img = $('#article-image-link').val()
-
-            console.log(data);
-
-            $.ajax({
-                url: '/admin/article/edit',
-                xhrFields: {
-                    withCredentials: true
-                },
-                method: 'POST',
-                dataType: 'json',
-                data: data,
-                success: function(data) {
-                    console.log(data);
-                    $('.image-form-answer').removeClass('d-none')
-                    $('.image-form-answer').html(data.message)
-                },
-                error: function(jqXHR) {
-                    $('.image-form-answer').removeClass('d-none')
-                    $('.image-form-answer').html("Ошибка сохранения статьи. Обратитесь к администратору. Код ошибки: " + jqXHR.status)
-                }
-            })
-
         })
     })
 }
 
-let articleManager = document.querySelector('.article-manager');
+let profileSubscribe = document.querySelector(".profile-subscribe")
 
-if (articleManager) {
+if (profileSubscribe) {
 
-    $(function () {
-        $('.chunk__form').submit(function (evt) {
-            evt.preventDefault()
-            let chunk = $('.chunk__select').val()
-            window.location = '/admin/article?chunk=' + chunk
-        })
+    let buttonSubscribeOn = document.querySelector(".profile-subscribe-button-on")
 
-        let deletingArticleID = 0;
+    if (buttonSubscribeOn) {
 
-        $('.admin-article__delete').click(function (event) {
-            $('#deletingArticleName').html($('#nameArticle' + this.dataset.id).html())
-            deletingArticleID = this.dataset.id
-        })
-
-        $('#buttonDeleteArticle').click(function () {
+        buttonSubscribeOn.addEventListener("click", (evt) => {
 
             $.ajax({
-                url: '/admin/article/delete?id=' + deletingArticleID,
+                url: '/profile/subscribe/on',
+                method: 'GET',
                 xhrFields: {
                     withCredentials: true
                 },
-                method: 'GET',
-                success: function () {
+                success: function(data) {
                     location.reload();
                 },
-                error: function () {
-                    console.log('Произошла ошибка удаления. Обратитесь к администратору');
+                error: function(jqXHR) {
+                    console.log('error')
                 }
             })
 
-            $('#deletingModal').modal('hide');
+        })
+
+    }
+
+    let buttonSubscribeOff = document.querySelector(".profile-subscribe-button-off")
+
+    if (buttonSubscribeOff) {
+
+        buttonSubscribeOff.addEventListener("click", (evt) => {
+
+            $.ajax({
+                url: '/profile/subscribe/off',
+                method: 'GET',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(data) {
+                    location.reload()
+                },
+                error: function(jqXHR) {
+                    console.log('error')
+                }
+            })
+
+        })
+
+    }
+
+
+}
+
+let subscribeContent = document.querySelector(".subscribe-content")
+
+if (subscribeContent) {
+
+    let subscribeUserButton = document.querySelector(".subscribe-user-button")
+
+    if (subscribeUserButton) {
+
+        subscribeUserButton.addEventListener("click", (evt) => {
+
+            $.ajax({
+                url: '/profile/subscribe/on',
+                method: 'GET',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(data) {
+                    location.reload()
+                },
+                error: function(jqXHR) {
+                    console.log('error')
+                }
+            })
+
+        })
+
+    }
+
+    let subscribeGuestButton = document.querySelector(".subscribe-guest-button")
+
+    if (subscribeGuestButton) {
+
+        subscribeGuestButton.addEventListener("click", (evt) => {
+
+            let emailInput = document.querySelector(".subscribe-email-input")
+
+            let email = emailInput.value
+            let regExp = /[a-z0-9]+@[a-z0-9]+\.[a-z0-9]+/i
+
+            if (regExp.test(email)) {
+
+                let inputAnswer = document.querySelector(".subscribe-answer")
+                inputAnswer.classList.toggle("d-none", true)
+
+                let data = {
+                    email: email,
+                }
+
+                $.ajax({
+                    url: '/subscriber/new',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: data,
+                    success: function(data) {
+                        if (data.ok) {
+                            let inputAnswer = document.querySelector(".subscribe-answer")
+                            inputAnswer.classList.toggle("d-none", false)
+                            inputAnswer.textContent = "Вы успешно подписались на рассылку"
+                        } else {
+                            let inputAnswer = document.querySelector(".subscribe-answer")
+                            inputAnswer.classList.toggle("d-none", false)
+                            inputAnswer.textContent = data.error;
+                        }
+                    },
+                    error: function(jqXHR) {
+                        console.log('error')
+                    }
+                })
+
+            } else {
+                let inputAnswer = document.querySelector(".subscribe-answer")
+                inputAnswer.classList.toggle("d-none", false)
+                inputAnswer.textContent = "Введенный email не соотвествует формату email."
+            }
+
+        })
+
+    }
+
+}
+
+let comments = document.querySelector(".comment")
+
+if (comments) {
+
+    let buttonApproveArr = document.querySelectorAll(".comment-button-approve")
+
+    buttonApproveArr.forEach(function (button) {
+        button.addEventListener("click", function (e) {
+
+            let id = e.currentTarget.dataset['id']
+
+            $.ajax({
+                url: '/admin/comments/new/check?id=' + id,
+                method: 'GET',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(data) {
+                    location.reload()
+                },
+                error: function(jqXHR) {
+                    console.log('error')
+                }
+            })
+
         })
     })
+
+
+    let buttonDeleteArr = document.querySelectorAll(".comment-button-delete")
+
+    buttonDeleteArr.forEach(function(button) {
+        button.addEventListener("click", function (e) {
+
+            let id = e.currentTarget.dataset['id']
+
+            $.ajax({
+                url: '/admin/comments/new/delete?id=' + id,
+                method: 'GET',
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(data) {
+                    location.reload()
+                },
+                error: function(jqXHR) {
+                    console.log('error')
+                }
+            })
+
+        })
+    })
+
+
 }

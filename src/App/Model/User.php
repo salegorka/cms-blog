@@ -14,4 +14,9 @@ class User extends Model {
         return $this->belongsTo('App\Model\Role', 'role_id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany('App\Model\Comment', 'created_by');
+    }
+
 }

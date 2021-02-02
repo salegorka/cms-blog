@@ -3,7 +3,6 @@
 namespace App;
 
 use App\View\View;
-use App\Model\Book;
 
 class Controller
 {
