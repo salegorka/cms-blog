@@ -14,13 +14,13 @@ class Auth
         $user = User::where('email', '=', $email)->get();
 
         if ($user->isEmpty()) {
-            throw new AuthException('Неверное имя пользователя или пароль.1');
+            throw new AuthException('Неверное имя пользователя или пароль');
         }
 
         $user = $user->first();
 
         if (!password_verify($password, $user->password)) {
-            throw new AuthException('Неверное имя пользователя или пароль.2');
+            throw new AuthException('Неверное имя пользователя или пароль');
         }
 
         $role = $user->role;

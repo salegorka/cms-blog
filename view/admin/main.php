@@ -1,4 +1,4 @@
-<?php require VIEW_DIR . './layout/base/header.php'; ?>
+<?php require VIEW_DIR . '/layout/base/header.php'; ?>
 <div class="row">
     <?php require VIEW_DIR . '/admin/admin-menu.php' ?>
     <div class="col-9 admin-panel">
@@ -11,15 +11,14 @@
             </p>
             <div class="admin-panel-setting-form">
                 <select class="admin-panel-settings-select">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="5">5</option>
-                    <option value="7">7</option>
-                    <option value="10">10</option>
+                    <?php $data['options'] = [1, 2, 3, 5, 7, 10];
+                    foreach ($data['options'] as $option) : ?>
+                        <option <?= $data['mainPageArticleCount'] == $option ? 'selected' : '' ?> value="<?= $option ?>"><?= $option ?></option>
+                    <?php endforeach; ?>
                 </select>
                 <button class="blog-button admin-panel-settings-button">Установить</button>
             </div>
         </div>
     </div>
 </div>
-<?php require VIEW_DIR . './admin/layout/footer.php'; ?>
+<?php require VIEW_DIR . '/admin/layout/footer.php'; ?>

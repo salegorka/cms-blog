@@ -35,6 +35,7 @@ class ArticleManager
         $articlesArr = [];
         foreach($articles as $article) {
             $tmpArr = $article->toArray();
+            $tmpArr['date'] = $article->created_at->format('Y-m-d');
             $tmpArr['author'] = $article->author->username;
             $articlesArr[] = $tmpArr;
         }
@@ -75,6 +76,7 @@ class ArticleManager
         }
 
         $data['article'] = $article->toArray();
+        $data['article']['date'] = $article->created_at->format('Y-m-d');
         $comments = $article->comments;
         $commentsArr = [];
         $comments->each(function ($comment) use (&$commentsArr) {

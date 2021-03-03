@@ -1,4 +1,4 @@
-<?php require VIEW_DIR . './layout/base/header.php'; ?>
+<?php require VIEW_DIR . '/layout/base/header.php'; ?>
 <link rel="stylesheet" href="/trumbowyg/dist/ui/trumbowyg.min.css">
 <div class="row">
     <?php require VIEW_DIR . '/admin/admin-menu.php' ?>
@@ -54,4 +54,4 @@
 </div>
 
 
-<?php require VIEW_DIR . './admin/layout/footerTrumb.php'; ?>
+<?php require VIEW_DIR . '/admin/layout/footerTrumb.php'; ?>

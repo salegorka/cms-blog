@@ -9,6 +9,7 @@
                     <img src="<?= $article['img'] ?>" alt="Статья" class="card-img-top article__img">
                     <div class="card-body p-0 article__body">
                         <h5 class="card-title article__header"><?= $article['name'] ?></h5>
+                        <p class="article__date"><?= $article['date'] ?></p>
                         <p class="card-text article__text"><?= $article['description'] ?></p>
                         <a href="<?= '/article?id=' . $article['id'] ?>" class="article__button blog-button">Продолжить</a>
                     </div>

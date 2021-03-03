@@ -6,7 +6,15 @@
                 <p class="user-info-email">Электронная почта: <?= $data['user']['email'] ?></p>
                 <p class="user-info-username">Имя пользователя: <?= $data['user']['username'] ?></p>
                 <p class="user-info-about">О себе: <?= $data['user']['about'] ?></p>
-                <p class="user-info-img">Аватар: <img src="<?= $data['user']['avatar'] ?>" alt="Аватар пользователя"></p>
+                <?php if (!empty($data['user']['avatar'])) : ?>
+                    <p class="user-info-img">Аватар:
+                        <figure class="user-info-img-container">
+                            <img class="user-info-img" src="<?= $data['user']['avatar'] ?>" alt="Аватар пользователя">
+                        </figure>
+                    </p>
+                <?php else: ?>
+                    <p>Аватар не установлен</p>
+                <?php endif; ?>
                 <p class="user-info-role">Ваша роль на сайте: <?= $data['user']['role'] ?></p>
             </div>
             <div class="profile-edit-link">

@@ -1,4 +1,4 @@
-<?php require VIEW_DIR . './layout/base/header.php'; ?>
+<?php require VIEW_DIR . '/layout/base/header.php'; ?>
     <div class="row">
         <?php require VIEW_DIR . '/admin/admin-menu.php' ?>
         <div class="col-9 new-comments-panel">Страница модерирования новых комментариев
@@ -63,4 +63,4 @@
             </div>
         </div>
     </div>
-<?php require VIEW_DIR . './admin/layout/footer.php'; ?>
+<?php require VIEW_DIR . '/admin/layout/footer.php'; ?>

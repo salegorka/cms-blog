@@ -272,12 +272,38 @@ html {
     text-decoration: none;
 }
 
+.article__date {
+    font: 400 0.75rem/1rem "Playfair Display";
+    color: #444444;
+}
+
 .article-pagination-link {
     color: #cd853f;
 }
 
 .article-pagination-link:hover {
     color: #626262;
+}
+
+.article-content__name {
+    font: 400 2rem/2.5rem "Playfair Display";
+    color: #2a2a2a;
+}
+
+.article-content__img-container {
+    min-width: 300px;
+    height: 500px;
+    margin: 0;
+}
+
+.article-content__img {
+    width: 100%;
+    height: 100%;
+}
+
+.article-content__date {
+    font: 400 0.75rem/1rem "Playfair Display";
+    color: #444444;
 }
 
 .subscribe-container {
@@ -516,6 +542,17 @@ html {
     display: block;
     width: 10%;
     align-content: center;
+}
+
+.user-info-img-container {
+    width: 400px;
+    height: 400px;
+    overflow: hidden;
+    margin: 0;
+}
+
+.user-info-img {
+    width: 100%;
 }
 
 .comment-input {

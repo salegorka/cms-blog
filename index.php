@@ -137,8 +137,6 @@ $router->post('/profile/edit', function () {
         $about = clean($_POST['about']);
         if (mb_strlen($about) > 0) {
             $userManager->setUserAbout($_SESSION['userId'], $_POST['about']);
-        } else {
-            $answer['error']['errorAbout'] = "Поле о себе не должно быть пустым";
         }
     }
 
@@ -255,7 +253,10 @@ $router->get('/admin', function () {
         throw new App\Exception\BadAuthorizedException();
     }
 
-    $controller = new App\Controller('admin.main');
+    $settings = App\Config::getInstance();
+    $data['mainPageArticleCount'] = $settings->get('mainSettings.mainPageArticleCount');
+
+    $controller = new App\Controller('admin.main', $data);
     return $controller->render();
 
 });
@@ -675,21 +676,8 @@ $router->get('/admin/users/role', function (){
 
     header("HTTP/1.0 200 OK");
 });
-$router->get('/about', function() {
-    return 'about';
-});
-$router->get('/books', function () {
-    $controller = new App\Controller('books');
-    return $controller->render();
-});
-$router->get('/test/*/test2/*', function ($param1, $param2) {
-    return "Test page with param1=$param1 param2=$param2";
-});
-$router->post('/data', function () {
-    return $_POST;
-});
+
 
 $application = new \App\Application($router);
-
 
 $application->run();
