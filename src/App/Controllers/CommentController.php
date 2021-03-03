@@ -8,6 +8,19 @@ use App\Services\CommentManager;
 
 class CommentController {
 
+    public static function addComment() {
+
+        if (!$_SESSION['isUserAuthorized']) {
+            throw new BadAuthorizedException();
+        }
+
+        $commentManager = new CommentManager();
+        $commentManager->addComment($_SESSION['userId'], $_POST['article'], $_POST['text']);
+
+        header('Location: /article?id=' . $_POST['article']);
+
+    }
+
     public static function checkNewComment() {
 
         if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
@@ -21,7 +34,7 @@ class CommentController {
 
     }
 
-    public function deleteNewComment() {
+    public static function deleteNewComment() {
 
         if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
             throw new BadAuthorizedException();

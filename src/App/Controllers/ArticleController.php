@@ -29,7 +29,6 @@ class ArticleController
 
     }
 
-
     public static function loadArticleToEdit() {
 
         if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
@@ -132,26 +131,6 @@ class ArticleController
         $articleManager->hideArticle($_GET['id']);
 
         header("HTTP/1.0 200 OK");
-
-    }
-
-    public static function sendNotificationArticle() {
-
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
-
-        if (!isset($_GET['id'])) {
-            throw new NotFoundException();
-        }
-
-        $articleManager = new ArticleManager();
-        $data['article'] = $articleManager->loadSingleArticle($_GET['id']);
-
-        $subscribeManager = new SubscribeManager();
-        $subscribeManager->sendNotification($data['article']['id'], $data['article']['name'], $data['article']['description']);
-
-        echo json_encode(['ok' => 'Уведомление успешно отправлено']);
 
     }
 

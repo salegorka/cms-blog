@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Config;
 use App\Services\ArticleManager;
 use App\Services\UserManager;
+use App\Services\Auth;
 use App\Controller;
 
 class BlogController
@@ -36,6 +37,27 @@ class BlogController
 
         $controller = new Controller('index', $data);
         return $controller->render();
+
+    }
+
+    public static function loadLoginPage() {
+
+        $controller = new Controller('login');
+        return $controller->render();
+
+    }
+
+    public static function loadRegPage() {
+
+        $controller = new Controller('reg');
+        return $controller->render();
+
+    }
+
+    public static function logout() {
+
+        Auth::logout();
+        header('Location: /');
 
     }
 

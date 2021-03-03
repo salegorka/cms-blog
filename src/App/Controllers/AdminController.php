@@ -12,7 +12,7 @@ use App\Services\UserManager;
 
 class AdminController {
 
-    public function loadAdminMainPage() {
+    public static function loadAdminMainPage() {
 
         if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
             throw new BadAuthorizedException();
@@ -26,7 +26,7 @@ class AdminController {
 
     }
 
-    public function updateSettingsAdmin() {
+    public static function updateSettingsAdmin() {
 
         if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
             throw new BadAuthorizedException();
@@ -87,7 +87,7 @@ class AdminController {
 
     }
 
-    public function loadAllCommentList() {
+    public static function loadAllCommentList() {
 
         if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
             throw new BadAuthorizedException();
@@ -114,7 +114,7 @@ class AdminController {
 
     }
 
-    public function loadNewCommentList() {
+    public static function loadNewCommentList() {
 
         if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
             throw new BadAuthorizedException();
@@ -141,7 +141,7 @@ class AdminController {
 
     }
 
-    public function loadUserList() {
+    public static function loadUserList() {
 
         if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 3)) {
             throw new BadAuthorizedException();
