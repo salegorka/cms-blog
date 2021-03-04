@@ -4,11 +4,11 @@ namespace App\Controllers;
 
 
 use App\Config;
-use App\Controller;
 use App\Exception\BadAuthorizedException;
 use App\Services\ArticleManager;
 use App\Services\CommentManager;
 use App\Services\UserManager;
+use App\View\View;
 
 class AdminController {
 
@@ -21,8 +21,7 @@ class AdminController {
         $settings = Config::getInstance();
         $data['mainPageArticleCount'] = $settings->get('mainSettings.mainPageArticleCount');
 
-        $controller = new Controller('admin.main', $data);
-        return $controller->render();
+        return new View('admin.main', $data);
 
     }
 
@@ -62,8 +61,7 @@ class AdminController {
         $data['maxPage'] = $articleManager->countMaxPageAdmin($data['chunk']);
         $data['articles'] = $articleManager->loadArticlesToAdminPage($data['chunk'], $data['page']);
 
-        $controller = new Controller('admin.article.article', $data);
-        return $controller->render();
+        return new View('admin.article.article', $data);
 
     }
 
@@ -82,8 +80,7 @@ class AdminController {
             $data['pages'][] = $item;
         }
 
-        $controller = new Controller('admin.staticPage.main', $data);
-        return $controller->render();
+        return new View('admin.staticPage.main', $data);
 
     }
 
@@ -109,8 +106,7 @@ class AdminController {
         $data['maxPage'] = $commentManager->countAllCommentsPage($data['chunk']);
         $data['comments'] = $commentManager->loadAllComments($data['chunk'], $data['page']);
 
-        $controller = new Controller('admin.comments.main', $data);
-        return $controller->render();
+        return new View('admin.comments.main', $data);
 
     }
 
@@ -136,8 +132,7 @@ class AdminController {
         $data['comments'] = $commentManager->loadNewComments($data['chunk'], $data['page']);
         $data['maxPage'] = $commentManager->countNewCommentsPage($data['chunk']);
 
-        $controller = new Controller('admin.comments.new', $data);
-        return $controller->render();
+        return new View('admin.comments.new', $data);
 
     }
 
@@ -163,8 +158,7 @@ class AdminController {
         $data['maxPage'] = $userManager->countUsersPage($data['chunk']);
         $data['users'] = $userManager->loadUsers($data['chunk'], $data['page']);
 
-        $controller = new Controller('admin.users.main', $data);
-        return $controller->render();
+        return new View('admin.users.main', $data);
 
     }
 

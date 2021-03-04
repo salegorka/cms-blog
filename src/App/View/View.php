@@ -10,7 +10,7 @@ class View implements Renderable
     private $viewName;
     private $data;
 
-    public function __construct($viewName, $data)
+    public function __construct($viewName, $data = NULL)
     {
         $this->viewName = $viewName;
         $this->data = $data;

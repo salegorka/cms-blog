@@ -6,7 +6,7 @@ use App\Exception\NotFoundException;
 use App\Exception\BadAuthorizedException;
 use App\Services\SubscribeManager;
 use App\Services\ArticleManager;
-use App\Controller;
+use App\View\View;
 
 class SubscriberController {
 
@@ -34,7 +34,7 @@ class SubscriberController {
             $subscriberManager = new SubscribeManager();
             $subscriberManager->subscriberDelById($_GET['id'], $_GET['token']);
 
-            $controller = new Controller("notificationCancel");
+            return new View("notificationCancel");
 
     }
 

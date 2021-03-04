@@ -6,7 +6,7 @@ use App\Config;
 use App\Services\ArticleManager;
 use App\Services\UserManager;
 use App\Services\Auth;
-use App\Controller;
+use App\View\View;
 
 class BlogController
 {
@@ -35,22 +35,19 @@ class BlogController
             $data['user'] = null;
         }
 
-        $controller = new Controller('index', $data);
-        return $controller->render();
+        return new View('index', $data);
 
     }
 
     public static function loadLoginPage() {
 
-        $controller = new Controller('login');
-        return $controller->render();
+        return new View('login');
 
     }
 
     public static function loadRegPage() {
 
-        $controller = new Controller('reg');
-        return $controller->render();
+        return new View('reg');
 
     }
 

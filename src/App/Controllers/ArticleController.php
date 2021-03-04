@@ -5,8 +5,7 @@ namespace App\Controllers;
 use App\Exception\NotFoundException;
 use App\Exception\BadAuthorizedException;
 use App\Services\ArticleManager;
-use App\Services\SubscribeManager;
-use App\Controller;
+use App\View\View;
 
 class ArticleController
 {
@@ -24,8 +23,7 @@ class ArticleController
         $articleManager = new ArticleManager();
         $data = $articleManager->loadArticleToView($id);
 
-        $controller = new Controller('article', $data);
-        return $controller->render();
+        return new View('article', $data);
 
     }
 
@@ -43,8 +41,7 @@ class ArticleController
 
         $data['article'] = $articleManager->loadSingleArticle($_GET['id']);
 
-        $controller = new Controller('admin.article.article-edit', $data);
-        return $controller->render();
+        return new View('admin.article.article-edit', $data);
 
     }
 

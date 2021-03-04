@@ -3,10 +3,10 @@
 namespace App\Controllers;
 
 use App\Config;
-use App\Controller;
 use App\Exception\NotFoundException;
 use App\Exception\BadAuthorizedException;
 use App\Services\PagesManager;
+use App\View\View;
 
 class PagesController {
 
@@ -29,8 +29,7 @@ class PagesController {
         $pagesManager = new PagesManager();
         $data['content'] = $pagesManager->loadPageContent($activePage['id']);
 
-        $controller = new Controller('staticPage', $data);
-        return $controller->render();
+        return new View('staticPage', $data);
 
     }
 
@@ -62,8 +61,7 @@ class PagesController {
         $pageController = new PagesManager();
         $data['content'] = $pageController->loadPageContent($data['id']);
 
-        $controller = new Controller('admin.staticPage.edit', $data);
-        return $controller->render();
+        return new View('admin.staticPage.edit', $data);
 
     }
 

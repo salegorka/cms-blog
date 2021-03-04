@@ -9,7 +9,7 @@ use App\Services\UserManager;
 use App\Services\Auth;
 use App\Services\Reg;
 use App\Services\SubscribeManager;
-use App\Controller;
+use App\View\View;
 
 class UserController {
 
@@ -20,8 +20,7 @@ class UserController {
             header('Location: /');
         } catch (\Exception $e) {
             $error = $e->getMessage();
-            $controller = new Controller('login', ['error' => $error]);
-            return $controller->render();
+            return new View('login', ['error' => $error]);
         }
 
     }
@@ -29,8 +28,7 @@ class UserController {
     public static function regNewUser() {
 
         if (!(isset($_POST['regCheck']) && $_POST['regCheck'] == 1)) {
-            $controller = new Controller('reg', ['error' => ['regCheck' => 'Необходимо согласиться с правилами сайта']]);
-            return $controller->render();
+            return new View('reg', ['error' => ['regCheck' => 'Необходимо согласиться с правилами сайта']]);
         }
 
         try {
@@ -39,8 +37,7 @@ class UserController {
             header('Location: /');
         } catch(RegException $e) {
             $error = $e->error;
-            $controller = new Controller('reg', ['error' => $error]);
-            return $controller->render();
+            return new View('reg', ['error' => $error]);
         }
         return 0;
 
@@ -60,8 +57,7 @@ class UserController {
             throw new NotFoundException();
         }
 
-        $controller = new Controller('profile', $data);
-        return $controller->render();
+        return new View('profile', $data);
 
     }
 
@@ -79,8 +75,7 @@ class UserController {
             throw new NotFoundException();
         }
 
-        $controller = new Controller('profile-edit', $data);
-        return $controller->render();
+        return new View('profile-edit', $data);
 
     }
 
@@ -184,8 +179,7 @@ class UserController {
             }
         }
 
-        $controller = new Controller('admin.users.userInfo', $data);
-        return $controller->render();
+        return new View('admin.users.userInfo', $data);
 
     }
 
