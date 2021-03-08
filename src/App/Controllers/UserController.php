@@ -11,9 +11,10 @@ use App\Services\Reg;
 use App\Services\SubscribeManager;
 use App\View\View;
 
-class UserController {
+class UserController extends Controller {
 
-    public static function loginUser() {
+    public static function loginUser()
+    {
 
         try {
             $result = Auth::authUser($_POST['loginEmailInput'], $_POST['loginPassInput']);
@@ -25,7 +26,8 @@ class UserController {
 
     }
 
-    public static function regNewUser() {
+    public static function regNewUser()
+    {
 
         if (!(isset($_POST['regCheck']) && $_POST['regCheck'] == 1)) {
             return new View('reg', ['error' => ['regCheck' => 'Необходимо согласиться с правилами сайта']]);
@@ -43,11 +45,10 @@ class UserController {
 
     }
 
-    public static function loadUserProfile() {
+    public static function loadUserProfile()
+    {
 
-        if (!$_SESSION['isUserAuthorized']) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkUserAuth();
 
         $data['id'] = $_SESSION['userId'];
         try {
@@ -61,11 +62,10 @@ class UserController {
 
     }
 
-    public static function loadUserProfileToEdit() {
+    public static function loadUserProfileToEdit()
+    {
 
-        if (!$_SESSION['isUserAuthorized']) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkUserAuth();
 
         $data['id'] = $_SESSION['userId'];
         try {
@@ -79,11 +79,10 @@ class UserController {
 
     }
 
-    public static function updateUserProfile() {
+    public static function updateUserProfile()
+    {
 
-        if (!$_SESSION['isUserAuthorized']) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkUserAuth();
 
         $userManager = new UserManager();
 
@@ -130,11 +129,10 @@ class UserController {
 
     }
 
-    public static function subscribeUserOn() {
+    public static function subscribeUserOn()
+    {
 
-        if (!$_SESSION['isUserAuthorized']) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkUserAuth();
 
         $subscribeManager = new SubscribeManager();
         $subscribeManager->subscribeUserOn($_SESSION['userId']);
@@ -143,11 +141,10 @@ class UserController {
 
     }
 
-    public static function subscribeUserOff() {
+    public static function subscribeUserOff()
+    {
 
-        if (!$_SESSION['isUserAuthorized']) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkUserAuth();
 
         $subscribeManager = new SubscribeManager();
         $subscribeManager->subscribeUserOff($_SESSION['userId']);
@@ -155,11 +152,10 @@ class UserController {
         header("HTTP/1.0 200 OK");
     }
 
-    public static function loadUserInfoAdmin() {
+    public static function loadUserInfoAdmin()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 3)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkAdminRights();
 
         $data = [];
         $userManager = new UserManager();
@@ -183,11 +179,10 @@ class UserController {
 
     }
 
-    public static function updateUserRole() {
+    public static function updateUserRole()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 3)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkAdminRights();
 
         $userManager = new UserManager();
         $userManager->setUserRole($_GET['id'], $_GET['role']);
@@ -196,11 +191,10 @@ class UserController {
 
     }
 
-    public static function deleteUser() {
+    public static function deleteUser()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 3)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkAdminRights();
 
         $userManager = new UserManager();
         $userManager->deleteUser($_GET['id']);

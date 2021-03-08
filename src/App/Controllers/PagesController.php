@@ -8,9 +8,10 @@ use App\Exception\BadAuthorizedException;
 use App\Services\PagesManager;
 use App\View\View;
 
-class PagesController {
+class PagesController extends Controller {
 
-    public static function loadPageToView($pageName) {
+    public static function loadPageToView($pageName)
+    {
 
         $config = Config::getInstance();
         $menu = $config->get('mainSettings.menu');
@@ -33,11 +34,10 @@ class PagesController {
 
     }
 
-    public static function loadPageToEdit() {
+    public static function loadPageToEdit()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $data = [];
         $data['id'] = 0;
@@ -65,11 +65,10 @@ class PagesController {
 
     }
 
-    public static function updatePage() {
+    public static function updatePage()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $data = $_POST;
 
@@ -80,11 +79,10 @@ class PagesController {
 
     }
 
-    public static function createPage() {
+    public static function createPage()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $pagesManager = new PagesManager();
         $id = $pagesManager->createNewPage();
@@ -93,11 +91,10 @@ class PagesController {
 
     }
 
-    public static function deletePage() {
+    public static function deletePage()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $deletingPageId = 0;
 

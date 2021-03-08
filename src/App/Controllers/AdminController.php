@@ -10,13 +10,12 @@ use App\Services\CommentManager;
 use App\Services\UserManager;
 use App\View\View;
 
-class AdminController {
+class AdminController extends Controller {
 
-    public static function loadAdminMainPage() {
+    public static function loadAdminMainPage()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $settings = Config::getInstance();
         $data['mainPageArticleCount'] = $settings->get('mainSettings.mainPageArticleCount');
@@ -25,11 +24,10 @@ class AdminController {
 
     }
 
-    public static function updateSettingsAdmin() {
+    public static function updateSettingsAdmin()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $config = Config::getInstance();
         $config->updateMainArticlesCount( $_GET['count']);
@@ -38,23 +36,13 @@ class AdminController {
 
     }
 
-    public static function loadArticlesList() {
+    public static function loadArticlesList()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
-        if (!isset($_GET['chunk'])) {
-            $data['chunk'] = 20;
-        } else {
-            $data['chunk'] = $_GET['chunk'];
-        }
-
-        if (!isset($_GET['page'])) {
-            $data['page'] = 1;
-        } else {
-            $data['page'] = $_GET['page'];
-        }
+        $data['chunk'] = $_GET['chunk'] ?? 20;
+        $data['page'] = $_GET['page'] ?? 1;
 
         $articleManager = new ArticleManager();
 
@@ -65,11 +53,10 @@ class AdminController {
 
     }
 
-    public static function loadPageList() {
+    public static function loadPageList()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $config = Config::getInstance();
         $menu = $config->get("mainSettings.menu");
@@ -84,23 +71,13 @@ class AdminController {
 
     }
 
-    public static function loadAllCommentList() {
+    public static function loadAllCommentList()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
-        if (!isset($_GET['chunk'])) {
-            $data['chunk'] = 20;
-        } else {
-            $data['chunk'] = $_GET['chunk'];
-        }
-
-        if (!isset($_GET['page'])) {
-            $data['page'] = 1;
-        } else {
-            $data['page'] = $_GET['page'];
-        }
+        $data['chunk'] = $_GET['chunk'] ?? 20;
+        $data['page'] = $_GET['page'] ?? 1;
 
         $commentManager = new CommentManager();
         $data['maxPage'] = $commentManager->countAllCommentsPage($data['chunk']);
@@ -110,23 +87,13 @@ class AdminController {
 
     }
 
-    public static function loadNewCommentList() {
+    public static function loadNewCommentList()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
-        if (!isset($_GET['chunk'])) {
-            $data['chunk'] = 20;
-        } else {
-            $data['chunk'] = $_GET['chunk'];
-        }
-
-        if (!isset($_GET['page'])) {
-            $data['page'] = 1;
-        } else {
-            $data['page'] = $_GET['page'];
-        }
+        $data['chunk'] = $_GET['chunk'] ?? 20;
+        $data['page'] = $_GET['page'] ?? 1;
 
         $commentManager = new CommentManager();
         $data['comments'] = $commentManager->loadNewComments($data['chunk'], $data['page']);
@@ -136,23 +103,13 @@ class AdminController {
 
     }
 
-    public static function loadUserList() {
+    public static function loadUserList()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 3)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkAdminRights();
 
-        if (!isset($_GET['chunk'])) {
-            $data['chunk'] = 20;
-        } else {
-            $data['chunk'] = $_GET['chunk'];
-        }
-
-        if (!isset($_GET['page'])) {
-            $data['page'] = 1;
-        } else {
-            $data['page'] = $_GET['page'];
-        }
+        $data['chunk'] = $_GET['chunk'] ?? 20;
+        $data['page'] = $_GET['page'] ?? 1;
 
         $userManager = new UserManager();
         $data['maxPage'] = $userManager->countUsersPage($data['chunk']);

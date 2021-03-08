@@ -8,9 +8,10 @@ use App\Services\SubscribeManager;
 use App\Services\ArticleManager;
 use App\View\View;
 
-class SubscriberController {
+class SubscriberController extends Controller {
 
-    public static function createSubscriber() {
+    public static function createSubscriber()
+    {
 
         $email = $_POST['email'];
 
@@ -25,35 +26,35 @@ class SubscriberController {
 
     }
 
-    public static function deleteSubscriber() {
+    public static function deleteSubscriber()
+    {
 
-            if (!(isset($_GET['id']) && $_GET['token'])) {
-                throw new NotFoundException();
-            }
+        if (!(isset($_GET['id']) && $_GET['token'])) {
+            throw new NotFoundException();
+        }
 
-            $subscriberManager = new SubscribeManager();
-            $subscriberManager->subscriberDelById($_GET['id'], $_GET['token']);
+        $subscriberManager = new SubscribeManager();
+        $subscriberManager->subscriberDelById($_GET['id'], $_GET['token']);
 
-            return new View("notificationCancel");
+        return new View("notificationCancel");
 
     }
 
-    public static function sendNotification() {
+    public static function sendNotification()
+    {
 
-            if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-                throw new BadAuthorizedException();
-            }
+        parent::checkContentManagerRights();
 
-            if (!isset($_GET['id'])) {
-                throw new NotFoundException();
-            }
+        if (!isset($_GET['id'])) {
+            throw new NotFoundException();
+        }
 
-            $articleManager = new ArticleManager();
-            $data['article'] = $articleManager->loadSingleArticle($_GET['id']);
+        $articleManager = new ArticleManager();
+        $data['article'] = $articleManager->loadSingleArticle($_GET['id']);
 
-            $subscribeManager = new SubscribeManager();
-            $subscribeManager->sendNotification($data['article']['id'], $data['article']['name'], $data['article']['description']);
+        $subscribeManager = new SubscribeManager();
+        $subscribeManager->sendNotification($data['article']['id'], $data['article']['name'], $data['article']['description']);
 
-            echo json_encode(['ok' => 'Уведомление успешно отправлено']);
+        echo json_encode(['ok' => 'Уведомление успешно отправлено']);
     }
 }

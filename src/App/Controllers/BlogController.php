@@ -8,18 +8,15 @@ use App\Services\UserManager;
 use App\Services\Auth;
 use App\View\View;
 
-class BlogController
+class BlogController extends Controller
 {
 
-    public static function loadBlogMainPage() {
+    public static function loadBlogMainPage()
+    {
 
         $data = [];
 
-        if (!isset($_GET['page'])) {
-            $data['page'] = 1;
-        } else {
-            $data['page'] = $_GET['page'];
-        }
+        $data['page'] = $_GET['page'] ?? 1;
 
         $config = Config::getInstance();
         $data['chunk'] = $config->get('mainSettings.mainPageArticleCount');
@@ -39,19 +36,22 @@ class BlogController
 
     }
 
-    public static function loadLoginPage() {
+    public static function loadLoginPage()
+    {
 
         return new View('login');
 
     }
 
-    public static function loadRegPage() {
+    public static function loadRegPage()
+    {
 
         return new View('reg');
 
     }
 
-    public static function logout() {
+    public static function logout()
+    {
 
         Auth::logout();
         header('Location: /');

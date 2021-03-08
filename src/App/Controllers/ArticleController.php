@@ -7,10 +7,11 @@ use App\Exception\BadAuthorizedException;
 use App\Services\ArticleManager;
 use App\View\View;
 
-class ArticleController
+class ArticleController extends Controller
 {
 
-    public static function loadArticleToView() {
+    public static function loadArticleToView()
+    {
 
         $id = 0;
 
@@ -27,11 +28,10 @@ class ArticleController
 
     }
 
-    public static function loadArticleToEdit() {
+    public static function loadArticleToEdit()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         if (!(isset($_GET['id']))) {
             throw new NotFoundException();
@@ -45,11 +45,10 @@ class ArticleController
 
     }
 
-    public static function updateArticle() {
+    public static function updateArticle()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $id = $_POST['id'];
         $data = [];
@@ -84,11 +83,10 @@ class ArticleController
 
     }
 
-    public static function createArticle() {
+    public static function createArticle()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $articleManager = new ArticleManager();
         $id = $articleManager->createNewArticle();
@@ -97,11 +95,10 @@ class ArticleController
 
     }
 
-    public static function showArticle() {
+    public static function showArticle()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         if (!isset($_GET['id'])) {
             throw new NotFoundException();
@@ -114,11 +111,10 @@ class ArticleController
 
     }
 
-    public static function hideArticle() {
+    public static function hideArticle()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         if (!isset($_GET['id'])) {
             throw new NotFoundException();
@@ -131,11 +127,10 @@ class ArticleController
 
     }
 
-    public static function deleteArticle() {
+    public static function deleteArticle()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         if (!isset($_GET['id'])) {
             throw new NotFoundException();

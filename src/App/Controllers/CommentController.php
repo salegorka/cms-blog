@@ -6,13 +6,12 @@ use App\Exception\BadAuthorizedException;
 use App\Exception\NotFoundException;
 use App\Services\CommentManager;
 
-class CommentController {
+class CommentController extends Controller {
 
-    public static function addComment() {
+    public static function addComment()
+    {
 
-        if (!$_SESSION['isUserAuthorized']) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkUserAuth();
 
         $commentManager = new CommentManager();
         $commentManager->addComment($_SESSION['userId'], $_POST['article'], $_POST['text']);
@@ -21,11 +20,10 @@ class CommentController {
 
     }
 
-    public static function checkNewComment() {
+    public static function checkNewComment()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $commentManager = new CommentManager();
         $commentManager->approveComment($_GET['id']);
@@ -34,11 +32,10 @@ class CommentController {
 
     }
 
-    public static function deleteNewComment() {
+    public static function deleteNewComment()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $commentManager = new CommentManager();
         $commentManager->deleteComment($_GET['id']);
@@ -47,11 +44,10 @@ class CommentController {
 
     }
 
-    public static function deleteComment() {
+    public static function deleteComment()
+    {
 
-        if (!(isset($_SESSION['rights']) && $_SESSION['rights'] >= 2)) {
-            throw new BadAuthorizedException();
-        }
+        parent::checkContentManagerRights();
 
         $deletingCommentId = 0;
 
