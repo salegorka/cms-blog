@@ -5,11 +5,9 @@ namespace App\Services;
 use App\Exception\RegException;
 use App\Model\User;
 use App\Model\Role;
-use App\Services\SubscribeManager;
 
 class Reg
 {
-
     public static function regNewUser($email, $username, $password, $passwordCheck)
     {
         $error = [];
@@ -70,7 +68,5 @@ class Reg
         $_SESSION['userId'] = $newUser->id;
 
         return true;
-
     }
-
 }

@@ -5,8 +5,8 @@ namespace App\Services;
 use App\Model\Page;
 use App\Config;
 
-class PagesManager {
-
+class PagesManager
+{
     public function loadPageContent($id)
     {
         $page = Page::find($id);
@@ -20,21 +20,18 @@ class PagesManager {
         return $pages;
     }
 
-    public function updatePage($id, $data)
+    public function updatePage($data)
     {
-
-        // Изменение записи в БД
+        $id = $data['id'];
 
         try {
             $page = Page::findOrFail($id);
         } catch (\Exception $e) {
-            return "Произошла ошибка. Указанной страницы не найдено.";
+            return ['message' => "Произошла ошибка. Указанной страницы не найдено.", 'result' => 'fail'];
         }
 
         $page->content = $data['content'];
         $page->save();
-
-        // Изменение обьекта меню
 
         $config = Config::getInstance();
         $menu = $config->get('mainSettings.menu');
@@ -48,13 +45,11 @@ class PagesManager {
 
         $config->updateMenu($menu);
 
-        return "Страница успешно изменена";
-
+        return ['message' => "Страница успешно изменена", 'result' => 'success'];
     }
 
     public function createNewPage()
     {
-
         $page = new Page();
 
         $page->content = '';
@@ -69,12 +64,10 @@ class PagesManager {
         $config->updateMenu($menu);
 
         return $id;
-
     }
 
     public function deletePage($id)
     {
-
         Page::destroy($id);
 
         $config = Config::getInstance();
@@ -89,6 +82,5 @@ class PagesManager {
         $config->updateMenu($menu);
 
         return 0;
-
     }
 }

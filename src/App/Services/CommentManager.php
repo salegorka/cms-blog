@@ -6,8 +6,8 @@ use App\Model\Comment;
 use App\Model\Article;
 use App\Model\User;
 
-class CommentManager {
-
+class CommentManager
+{
     public function addComment($user_id, $article_id, $text)
     {
         $comment = new Comment();

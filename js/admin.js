@@ -16,8 +16,11 @@ if (adminPage) {
                     withCredentials: true
                 },
                 method: 'GET',
-                success: function () {
-                    location.assign('/')
+                dataType: 'json',
+                success: function (data) {
+                    if (data.result === 'success') {
+                        location.assign('/')
+                    }
                 },
                 error: function () {
                     console.log("Произошла ошибка удаления. Обратитесь к администратору")
@@ -160,8 +163,11 @@ if (articleEditPanel) {
                 xhrFields: {
                     withCredentials: true
                 },
+                dataType: 'json',
                 success: function(data) {
-                    location.reload();
+                    if (data.result === 'success') {
+                        location.reload();
+                    }
                 },
                 error: function(jqXHR) {
                     console.log('error')
@@ -185,8 +191,11 @@ if (articleEditPanel) {
                 xhrFields: {
                     withCredentials: true
                 },
+                dataType: 'json',
                 success: function(data) {
-                    location.reload();
+                    if (data.result === 'success') {
+                        location.reload();
+                    }
                 },
                 error: function(jqXHR) {
                     console.log('error')
@@ -211,10 +220,9 @@ if (articleEditPanel) {
                 },
                 dataType: 'json',
                 success: function(data) {
-                    if (data.ok) {
-                        console.log(data)
+                    if (data.result === 'success') {
                         let answer = document.querySelector(".article-editor-notification-answer")
-                        answer.textContent = data.ok;
+                        answer.textContent = data.message;
                     } else {
                         let answer = document.querySelector(".article-editor-notification-answer")
                         answer.textContent = "Произошла неизвестная ошибка. Обратитесь к администратору."
@@ -256,8 +264,11 @@ if (articleManager) {
                     withCredentials: true
                 },
                 method: 'GET',
-                success: function () {
-                    location.reload();
+                dataType: 'json',
+                success: function (data) {
+                    if (data.result === 'success') {
+                        location.reload();
+                    }
                 },
                 error: function () {
                     console.log('Произошла ошибка удаления. Обратитесь к администратору');
@@ -350,8 +361,11 @@ if (pageManager) {
                 withCredentials: true
             },
             method: 'GET',
-            success: function () {
-                location.reload();
+            dataType: 'json',
+            success: function (data) {
+                if (data.result === 'success') {
+                    location.reload();
+                }
             },
             error: function () {
                 console.log("Произошла ошибка удаления. Обратитесь к администратору")
@@ -384,8 +398,11 @@ if (commentList) {
                     withCredentials: true
                 },
                 method: 'GET',
-                success: function () {
-                    location.reload();
+                dataType: 'json',
+                success: function (data) {
+                    if (data.result === 'success') {
+                        location.reload()
+                    }
                 },
                 error: function () {
                     console.log("Произошла ошибка удаления. Обратитесь к администратору")
@@ -404,45 +421,57 @@ let newComments = document.querySelector(".new-comments-comment")
 
 if (newComments) {
 
-    let buttonCheck = document.querySelector(".new-comments-comment-check")
+    let buttonsCheck = document.querySelectorAll(".new-comments-comment-check")
 
-    buttonCheck.addEventListener('click', (evt) => {
+    buttonsCheck.forEach((button) => {
+        button.addEventListener('click', function(evt) {
 
-        $.ajax({
-            url: '/admin/comments/new/check?id=' + buttonCheck.dataset['id'],
-            xhrFields: {
-                withCredentials: true
-            },
-            method: 'GET',
-            success: function () {
-                location.reload()
-            },
-            error: function () {
-                console.log("Произошла ошибка запроса. Обратитесь к администратору")
-            }
+            $.ajax({
+                url: '/admin/comments/new/check?id=' + evt.currentTarget.dataset['id'],
+                xhrFields: {
+                    withCredentials: true
+                },
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.result === 'success') {
+                        location.reload()
+                    }
+                },
+                error: function () {
+                    console.log("Произошла ошибка запроса. Обратитесь к администратору")
+                }
+            })
+
+
         })
-
     })
 
-    let buttonDelete = document.querySelector(".new-comments-comment-delete")
+    let buttonsDelete = document.querySelectorAll(".new-comments-comment-delete")
 
-    buttonDelete.addEventListener('click', (evt) => {
+    buttonsDelete.forEach((button) => {
+        button.addEventListener('click', function(evt) {
 
-        $.ajax({
-            url: '/admin/comments/new/delete?id=' + buttonDelete.dataset['id'],
-            xhrFields: {
-                withCredentials: true
-            },
-            method: 'GET',
-            success: function () {
-                location.reload()
-            },
-            error: function () {
-                console.log("Произошла ошибка удаления. Обратитесь к администратору")
-            }
+            $.ajax({
+                url: '/admin/comments/new/delete?id=' + evt.currentTarget.dataset['id'],
+                xhrFields: {
+                    withCredentials: true
+                },
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.result === 'success') {
+                        location.reload()
+                    }
+                },
+                error: function () {
+                    console.log("Произошла ошибка удаления. Обратитесь к администратору")
+                }
+            })
+
         })
+    })
 
-    });
 }
 
 let userInfo = document.querySelector(".user-info-panel")
@@ -459,8 +488,11 @@ if (userInfo) {
                 withCredentials: true
             },
             method: 'GET',
-            success: function () {
-                location.assign('/admin/users')
+            dataType: 'json',
+            success: function (data) {
+                if (data.result === 'success') {
+                    location.assign('/admin/users')
+                }
             },
             error: function () {
                 console.log("Произошла ошибка удаления. Обратитесь к администратору")
@@ -481,8 +513,11 @@ if (userInfo) {
                 withCredentials: true
             },
             method: 'GET',
-            success: function () {
-                location.reload()
+            dataType: 'json',
+            success: function (data) {
+                if (data.result === 'success') {
+                    location.reload()
+                }
             },
             error: function () {
                 console.log("Произошла обновления роли. Обратитесь к администратору")

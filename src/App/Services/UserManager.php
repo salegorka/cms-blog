@@ -4,9 +4,10 @@ namespace App\Services;
 
 use App\Model\User;
 use App\Model\Role;
+use App\Services\ImagesManager;
 
-class UserManager {
-
+class UserManager
+{
     public function countUsers()
     {
         return User::where('id', '!=', 0)->count();
@@ -59,11 +60,16 @@ class UserManager {
     public function setUserAvatar($id, $avatarLink)
     {
         $user = User::find($id);
+        if (!empty($user->avatar)) {
+            $imagesManager = new ImagesManager();
+            $imagesManager->deleteImage($_SERVER['DOCUMENT_ROOT'] . $user->avatar);
+        }
         $user->avatar = $avatarLink;
         $user->save();
     }
 
-    public function setUserRole($id, $roleId) {
+    public function setUserRole($id, $roleId)
+    {
         $user = User::find($id);
         $role = Role::find($roleId);
 
@@ -73,7 +79,11 @@ class UserManager {
 
     public function deleteUser($id)
     {
+        $user = User::find($id);
+        if (!empty($user->avatar)) {
+            $imagesManager = new ImagesManager();
+            $imagesManager->deleteImage($_SERVER['DOCUMENT_ROOT'] . $user->avatar);
+        }
         User::destroy($id);
     }
-
 }

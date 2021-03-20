@@ -3,18 +3,14 @@
 namespace App\Controllers;
 
 use App\Exception\NotFoundException;
-use App\Exception\BadAuthorizedException;
 use App\Services\ArticleManager;
+use App\View\JsonResponse;
 use App\View\View;
 
 class ArticleController extends Controller
 {
-
-    public static function loadArticleToView()
+    public function loadArticleToView()
     {
-
-        $id = 0;
-
         if (!isset($_GET['id'])) {
             throw new NotFoundException();
         } else {
@@ -25,12 +21,10 @@ class ArticleController extends Controller
         $data = $articleManager->loadArticleToView($id);
 
         return new View('article', $data);
-
     }
 
-    public static function loadArticleToEdit()
+    public function loadArticleToEdit()
     {
-
         parent::checkContentManagerRights();
 
         if (!(isset($_GET['id']))) {
@@ -42,12 +36,10 @@ class ArticleController extends Controller
         $data['article'] = $articleManager->loadSingleArticle($_GET['id']);
 
         return new View('admin.article.article-edit', $data);
-
     }
 
-    public static function updateArticle()
+    public function updateArticle()
     {
-
         parent::checkContentManagerRights();
 
         $id = $_POST['id'];
@@ -70,34 +62,30 @@ class ArticleController extends Controller
         }
 
         $articleManager = new ArticleManager();
-        $message = "";
 
         try {
             $message = $articleManager->updateArticle($id, $data);
+            $response = ['message' => $message, 'result' => 'success'];
         } catch (\Exception $e) {
             $message = "Статья с таким id не найдена";
+            $response = ['message' => $message, 'result' => 'fail'];
         }
 
-        //echo json_encode(['message' => $_POST]);
-        echo json_encode(['message' => $message]);
-
+        return new JsonResponse($response);
     }
 
-    public static function createArticle()
+    public function createArticle()
     {
-
         parent::checkContentManagerRights();
 
         $articleManager = new ArticleManager();
         $id = $articleManager->createNewArticle();
 
-        header('Location: /admin/article/edit?id=' . $id);
-
+        $this->redirect('/admin/article/edit?id=' . $id);
     }
 
-    public static function showArticle()
+    public function showArticle()
     {
-
         parent::checkContentManagerRights();
 
         if (!isset($_GET['id'])) {
@@ -107,13 +95,11 @@ class ArticleController extends Controller
         $articleManager= new ArticleManager();
         $articleManager->showArticle($_GET['id']);
 
-        header("HTTP/1.0 200 OK");
-
+        return new JsonResponse(['result' => 'success']);
     }
 
-    public static function hideArticle()
+    public function hideArticle()
     {
-
         parent::checkContentManagerRights();
 
         if (!isset($_GET['id'])) {
@@ -123,13 +109,11 @@ class ArticleController extends Controller
         $articleManager= new ArticleManager();
         $articleManager->hideArticle($_GET['id']);
 
-        header("HTTP/1.0 200 OK");
-
+        return new JsonResponse(['result' => 'success']);
     }
 
-    public static function deleteArticle()
+    public function deleteArticle()
     {
-
         parent::checkContentManagerRights();
 
         if (!isset($_GET['id'])) {
@@ -139,8 +123,6 @@ class ArticleController extends Controller
         $articleManager = new ArticleManager();
         $articleManager->deleteArticle($_GET['id']);
 
-        header("HTTP/1.0 200 OK");
-
+        return new JsonResponse(['result' => 'success']);
     }
-
 }

@@ -8,7 +8,6 @@ use App\Model\User;
 
 class ArticleManager
 {
-
     public function countArticles()
     {
         return Article::where('shown', '=', 1)->count();
@@ -114,7 +113,8 @@ class ArticleManager
         return "Данные успшено сохранены";
     }
 
-    public function showArticle($id) {
+    public function showArticle($id)
+    {
         $article = Article::find($id);
         $article->shown = true;
         $article->save();
@@ -128,7 +128,6 @@ class ArticleManager
 
     public function createNewArticle()
     {
-
         $article = new Article();
 
         $article->name = 'Новая статья';
@@ -142,12 +141,10 @@ class ArticleManager
 
         $article->save();
         return $article->id;
-
     }
 
     public function deleteArticle($id)
     {
         Article::destroy($id);
     }
-
 }

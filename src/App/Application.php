@@ -21,8 +21,7 @@ class Application
 
         try {
             $view = $this->router->dispatch();
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $this->renderException($e);
         }
 
@@ -59,7 +58,5 @@ class Application
 
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
-
-
     }
 }

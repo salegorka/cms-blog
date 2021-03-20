@@ -2,43 +2,37 @@
 
 namespace App\Controllers;
 
-
 use App\Config;
-use App\Exception\BadAuthorizedException;
 use App\Services\ArticleManager;
 use App\Services\CommentManager;
 use App\Services\UserManager;
 use App\View\View;
+use App\View\JsonResponse;
 
-class AdminController extends Controller {
-
-    public static function loadAdminMainPage()
+class AdminController extends Controller
+{
+    public function loadAdminMainPage()
     {
-
         parent::checkContentManagerRights();
 
         $settings = Config::getInstance();
         $data['mainPageArticleCount'] = $settings->get('mainSettings.mainPageArticleCount');
 
         return new View('admin.main', $data);
-
     }
 
-    public static function updateSettingsAdmin()
+    public function updateSettingsAdmin()
     {
-
         parent::checkContentManagerRights();
 
         $config = Config::getInstance();
         $config->updateMainArticlesCount( $_GET['count']);
 
-        header("HTTP/1.0 200 OK");
-
+        return new JsonResponse(['result' => 'success']);
     }
 
-    public static function loadArticlesList()
+    public function loadArticlesList()
     {
-
         parent::checkContentManagerRights();
 
         $data['chunk'] = $_GET['chunk'] ?? 20;
@@ -50,12 +44,10 @@ class AdminController extends Controller {
         $data['articles'] = $articleManager->loadArticlesToAdminPage($data['chunk'], $data['page']);
 
         return new View('admin.article.article', $data);
-
     }
 
-    public static function loadPageList()
+    public function loadPageList()
     {
-
         parent::checkContentManagerRights();
 
         $config = Config::getInstance();
@@ -68,12 +60,10 @@ class AdminController extends Controller {
         }
 
         return new View('admin.staticPage.main', $data);
-
     }
 
-    public static function loadAllCommentList()
+    public function loadAllCommentList()
     {
-
         parent::checkContentManagerRights();
 
         $data['chunk'] = $_GET['chunk'] ?? 20;
@@ -84,12 +74,10 @@ class AdminController extends Controller {
         $data['comments'] = $commentManager->loadAllComments($data['chunk'], $data['page']);
 
         return new View('admin.comments.main', $data);
-
     }
 
-    public static function loadNewCommentList()
+    public function loadNewCommentList()
     {
-
         parent::checkContentManagerRights();
 
         $data['chunk'] = $_GET['chunk'] ?? 20;
@@ -100,12 +88,10 @@ class AdminController extends Controller {
         $data['maxPage'] = $commentManager->countNewCommentsPage($data['chunk']);
 
         return new View('admin.comments.new', $data);
-
     }
 
-    public static function loadUserList()
+    public function loadUserList()
     {
-
         parent::checkAdminRights();
 
         $data['chunk'] = $_GET['chunk'] ?? 20;
@@ -116,7 +102,5 @@ class AdminController extends Controller {
         $data['users'] = $userManager->loadUsers($data['chunk'], $data['page']);
 
         return new View('admin.users.main', $data);
-
     }
-
 }

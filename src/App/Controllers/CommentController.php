@@ -2,54 +2,46 @@
 
 namespace App\Controllers;
 
-use App\Exception\BadAuthorizedException;
 use App\Exception\NotFoundException;
 use App\Services\CommentManager;
+use App\View\JsonResponse;
 
-class CommentController extends Controller {
-
-    public static function addComment()
+class CommentController extends Controller
+{
+    public function addComment()
     {
-
         parent::checkUserAuth();
 
         $commentManager = new CommentManager();
         $commentManager->addComment($_SESSION['userId'], $_POST['article'], $_POST['text']);
 
-        header('Location: /article?id=' . $_POST['article']);
 
+        $this->redirect('/article?id=' . $_POST['article']);
     }
 
-    public static function checkNewComment()
+    public function checkNewComment()
     {
-
         parent::checkContentManagerRights();
 
         $commentManager = new CommentManager();
         $commentManager->approveComment($_GET['id']);
 
-        header("HTTP/1.0 200 OK");
-
+        return new JsonResponse(['result' => 'success']);
     }
 
-    public static function deleteNewComment()
+    public function deleteNewComment()
     {
-
         parent::checkContentManagerRights();
 
         $commentManager = new CommentManager();
         $commentManager->deleteComment($_GET['id']);
 
-        header("HTTP/1.0 200 OK");
-
+        return new JsonResponse(['result' => 'success']);
     }
 
-    public static function deleteComment()
+    public function deleteComment()
     {
-
         parent::checkContentManagerRights();
-
-        $deletingCommentId = 0;
 
         if (!isset($_GET['id'])) {
             throw new NotFoundException();
@@ -60,8 +52,6 @@ class CommentController extends Controller {
         $commentManager = new CommentManager();
         $commentManager->deleteComment($deletingCommentId);
 
-        header("HTTP/1.0 200 OK");
-
+        return new JsonResponse(['result' => 'success']);
     }
-
 }

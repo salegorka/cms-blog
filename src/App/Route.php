@@ -25,10 +25,12 @@ class Route
         return ($this->method === $method && (1 === preg_match('/^' . str_replace(['*', '/'], ['\w+', '\/'], $this->path) . '$/', $uri)));
     }
 
-    private function prepareCallback($callback) {
-
+    private function prepareCallback($callback)
+    {
         if (is_callable($callback)) {
             return $callback;
+        } else {
+            return explode( "@", $callback);
         }
     }
 
@@ -39,8 +41,11 @@ class Route
         $matches = [];
         preg_match('/^' . str_replace(['*', '/'], ['(\w+)', '\/'], $this->path) . '$/', $uri, $matches);
         array_shift($matches);
-        return call_user_func_array($callback, $matches);
-
+        if (!(is_array($callback))) {
+            return call_user_func_array($callback, $matches);
+        } else {
+            $controllerInstance = new $callback[0]();
+            return call_user_func_array(array($controllerInstance, $callback[1]), $matches);
+        }
     }
-
 }

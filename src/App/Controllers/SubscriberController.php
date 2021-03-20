@@ -3,32 +3,32 @@
 namespace App\Controllers;
 
 use App\Exception\NotFoundException;
-use App\Exception\BadAuthorizedException;
 use App\Services\SubscribeManager;
 use App\Services\ArticleManager;
 use App\View\View;
+use App\View\JsonResponse;
+use App\Exception\JsonException;
 
-class SubscriberController extends Controller {
-
-    public static function createSubscriber()
+class SubscriberController extends Controller
+{
+    public function createSubscriber()
     {
-
         $email = $_POST['email'];
 
         $subscriberManager = new SubscribeManager();
 
         if ($subscriberManager->subscriberCheck($email)) {
-            return json_encode(['error' => "Подписчик с таким email уже подписан на обновления"]);
+            $response = ['message' => "Подписчик с таким email уже подписан на обновления", 'result' => 'fail'];
         } else {
             $subscriberManager->subscriberAdd($email);
-            return json_encode(['ok' => true]);
+            $response = ['result' => 'success'];
         }
 
+        return new JsonResponse($response);
     }
 
-    public static function deleteSubscriber()
+    public function deleteSubscriber()
     {
-
         if (!(isset($_GET['id']) && $_GET['token'])) {
             throw new NotFoundException();
         }
@@ -37,12 +37,10 @@ class SubscriberController extends Controller {
         $subscriberManager->subscriberDelById($_GET['id'], $_GET['token']);
 
         return new View("notificationCancel");
-
     }
 
-    public static function sendNotification()
+    public function sendNotification()
     {
-
         parent::checkContentManagerRights();
 
         if (!isset($_GET['id'])) {
@@ -55,6 +53,6 @@ class SubscriberController extends Controller {
         $subscribeManager = new SubscribeManager();
         $subscribeManager->sendNotification($data['article']['id'], $data['article']['name'], $data['article']['description']);
 
-        echo json_encode(['ok' => 'Уведомление успешно отправлено']);
+        return new JsonResponse(['result' => 'success', 'message' => 'Уведомление успешно отправлено']);
     }
 }

@@ -4,15 +4,14 @@ namespace App\Controllers;
 
 use App\Config;
 use App\Exception\NotFoundException;
-use App\Exception\BadAuthorizedException;
 use App\Services\PagesManager;
+use App\View\JsonResponse;
 use App\View\View;
 
-class PagesController extends Controller {
-
-    public static function loadPageToView($pageName)
+class PagesController extends Controller
+{
+    public function loadPageToView($pageName)
     {
-
         $config = Config::getInstance();
         $menu = $config->get('mainSettings.menu');
 
@@ -31,12 +30,10 @@ class PagesController extends Controller {
         $data['content'] = $pagesManager->loadPageContent($activePage['id']);
 
         return new View('staticPage', $data);
-
     }
 
-    public static function loadPageToEdit()
+    public function loadPageToEdit()
     {
-
         parent::checkContentManagerRights();
 
         $data = [];
@@ -62,41 +59,33 @@ class PagesController extends Controller {
         $data['content'] = $pageController->loadPageContent($data['id']);
 
         return new View('admin.staticPage.edit', $data);
-
     }
 
-    public static function updatePage()
+    public function updatePage()
     {
-
         parent::checkContentManagerRights();
 
         $data = $_POST;
 
         $pagesManager = new PagesManager();
-        $message = $pagesManager->updatePage($data['id'], $data);
+        $response = $pagesManager->updatePage($data);
 
-        echo json_encode(['message' => $message]);
-
+        return new JsonResponse($response);
     }
 
-    public static function createPage()
+    public function createPage()
     {
-
         parent::checkContentManagerRights();
 
         $pagesManager = new PagesManager();
         $id = $pagesManager->createNewPage();
 
-        header('Location: /admin/pages/edit?id=' . $id);
-
+        $this->redirect('/admin/pages/edit?id=' . $id);
     }
 
-    public static function deletePage()
+    public function deletePage()
     {
-
         parent::checkContentManagerRights();
-
-        $deletingPageId = 0;
 
         if (!isset($_GET['id'])) {
             throw new NotFoundException();
@@ -107,8 +96,6 @@ class PagesController extends Controller {
         $pageManager = new PagesManager();
         $pageManager->deletePage($deletingPageId);
 
-        header("HTTP/1.0 200 OK");
-
+        return new JsonResponse(['result' => 'success']);
     }
-
 }

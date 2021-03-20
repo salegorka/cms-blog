@@ -4,8 +4,8 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model {
-
+class User extends Model
+{
     protected $table = 'users';
     public $timestamps = false;
 
@@ -18,5 +18,4 @@ class User extends Model {
     {
         return $this->hasMany('App\Model\Comment', 'created_by');
     }
-
 }

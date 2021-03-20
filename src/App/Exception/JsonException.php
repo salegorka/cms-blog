@@ -3,8 +3,9 @@
 namespace App\Exception;
 
 use Throwable;
+use App\Interfaces\Renderable;
 
-class RegException extends \Exception
+class JsonException extends \Exception implements Renderable
 {
     public $error = [];
 
@@ -12,5 +13,10 @@ class RegException extends \Exception
     {
         $this->error = $error;
         parent::__construct($message, $code, $previous);
+    }
+
+    public function render()
+    {
+        echo json_encode(['result' => 'fail', 'error' => $this->error]);
     }
 }

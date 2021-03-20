@@ -10,10 +10,8 @@ use App\View\View;
 
 class BlogController extends Controller
 {
-
-    public static function loadBlogMainPage()
+    public function loadBlogMainPage()
     {
-
         $data = [];
 
         $data['page'] = $_GET['page'] ?? 1;
@@ -33,29 +31,21 @@ class BlogController extends Controller
         }
 
         return new View('index', $data);
-
     }
 
-    public static function loadLoginPage()
+    public function loadLoginPage()
     {
-
         return new View('login');
-
     }
 
-    public static function loadRegPage()
+    public function loadRegPage()
     {
-
         return new View('reg');
-
     }
 
-    public static function logout()
+    public function logout()
     {
-
         Auth::logout();
-        header('Location: /');
-
+        $this->redirect('/');
     }
-
 }

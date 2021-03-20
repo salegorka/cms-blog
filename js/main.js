@@ -31,20 +31,14 @@ if (profileEdit) {
             contentType: false,
             data: formData,
             success: function(data) {
-                if (data.ok) {
+                if (data.result === 'success') {
                     location.reload();
                 } else if (!(data.error === undefined)) {
-                    if (!(data.error.errorAbout === undefined)) {
-                        let formAnswer = document.querySelector(".profile-edit-form-about-answer")
-                        formAnswer.classList.remove("d-none")
-                        formAnswer.textContent = data.error.errorAbout
-                    }
                     if(!(data.error.errorAvatar === undefined)) {
                         let formAnswer = document.querySelector(".profile-edit-form-avatar-answer")
                         formAnswer.classList.remove("d-none")
                         formAnswer.textContent = data.error.errorAvatar
                     }
-
                 }
             },
             error: function(jqXHR) {
@@ -70,8 +64,11 @@ if (profileSubscribe) {
                 xhrFields: {
                     withCredentials: true
                 },
+                dataType: 'json',
                 success: function(data) {
-                    location.reload();
+                    if (data.result === 'success') {
+                        location.reload();
+                    }
                 },
                 error: function(jqXHR) {
                     console.log('error')
@@ -94,8 +91,11 @@ if (profileSubscribe) {
                 xhrFields: {
                     withCredentials: true
                 },
+                dataType: 'json',
                 success: function(data) {
-                    location.reload()
+                    if (data.result === 'success') {
+                        location.reload();
+                    }
                 },
                 error: function(jqXHR) {
                     console.log('error')
@@ -105,8 +105,6 @@ if (profileSubscribe) {
         })
 
     }
-
-
 }
 
 let subscribeContent = document.querySelector(".subscribe-content")
@@ -125,8 +123,11 @@ if (subscribeContent) {
                 xhrFields: {
                     withCredentials: true
                 },
+                dataType: 'json',
                 success: function(data) {
-                    location.reload()
+                    if (data.result === 'success') {
+                        location.reload()
+                    }
                 },
                 error: function(jqXHR) {
                     console.log('error')
@@ -163,14 +164,14 @@ if (subscribeContent) {
                     dataType: 'json',
                     data: data,
                     success: function(data) {
-                        if (data.ok) {
+                        if (data.result === 'success') {
                             let inputAnswer = document.querySelector(".subscribe-answer")
                             inputAnswer.classList.toggle("d-none", false)
                             inputAnswer.textContent = "Вы успешно подписались на рассылку"
                         } else {
                             let inputAnswer = document.querySelector(".subscribe-answer")
                             inputAnswer.classList.toggle("d-none", false)
-                            inputAnswer.textContent = data.error;
+                            inputAnswer.textContent = data.message;
                         }
                     },
                     error: function(jqXHR) {
@@ -207,8 +208,11 @@ if (comments) {
                 xhrFields: {
                     withCredentials: true
                 },
+                dataType: 'json',
                 success: function(data) {
-                    location.reload()
+                    if (data.result === 'success') {
+                        location.reload()
+                    }
                 },
                 error: function(jqXHR) {
                     console.log('error')
@@ -232,8 +236,11 @@ if (comments) {
                 xhrFields: {
                     withCredentials: true
                 },
+                datatype: 'json',
                 success: function(data) {
-                    location.reload()
+                    if (data.result === 'success') {
+                        location.reload()
+                    }
                 },
                 error: function(jqXHR) {
                     console.log('error')

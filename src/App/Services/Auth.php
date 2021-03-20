@@ -7,10 +7,8 @@ use App\Model\User;
 
 class Auth
 {
-
     public static function authUser($email, $password)
     {
-
         $user = User::where('email', '=', $email)->get();
 
         if ($user->isEmpty()) {
@@ -35,12 +33,10 @@ class Auth
 
     public static function logout()
     {
-
         $_SESSION['isUserAuthorized'] = false;
         $_SESSION['rights'] = null;
         $_SESSION['username'] = null;
         $_SESSION['userId'] = null;
 
     }
-
 }

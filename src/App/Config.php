@@ -28,8 +28,8 @@ final class Config
     }
 
 
-    public function updateMainArticlesCount($value) {
-
+    public function updateMainArticlesCount($value)
+    {
         $this->configs['mainSettings']['mainPageArticleCount'] = $value;
         file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/settings/mainSettings.json', json_encode($this->configs['mainSettings']));
     }
@@ -39,5 +39,4 @@ final class Config
         $this->configs['mainSettings']['menu'] = $menu;
         file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/settings/mainSettings.json', json_encode($this->configs['mainSettings']));
     }
-
 }

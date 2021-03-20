@@ -2,52 +2,48 @@
 
 namespace App\Controllers;
 
-use App\Exception\BadAuthorizedException;
+use App\Exception\JsonException;
 use App\Exception\NotFoundException;
 use App\Exception\RegException;
 use App\Services\UserManager;
 use App\Services\Auth;
 use App\Services\Reg;
 use App\Services\SubscribeManager;
+use App\View\JsonResponse;
 use App\View\View;
 
-class UserController extends Controller {
-
-    public static function loginUser()
+class UserController extends Controller
+{
+    public function loginUser()
     {
-
         try {
-            $result = Auth::authUser($_POST['loginEmailInput'], $_POST['loginPassInput']);
-            header('Location: /');
+            Auth::authUser($_POST['loginEmailInput'], $_POST['loginPassInput']);
+            $this->redirect('/');
         } catch (\Exception $e) {
             $error = $e->getMessage();
             return new View('login', ['error' => $error]);
         }
-
     }
 
-    public static function regNewUser()
+    public function regNewUser()
     {
-
         if (!(isset($_POST['regCheck']) && $_POST['regCheck'] == 1)) {
             return new View('reg', ['error' => ['regCheck' => 'Необходимо согласиться с правилами сайта']]);
         }
 
         try {
-            $result = Reg::regNewUser($_POST['regEmailInput'], $_POST['regUsernameInput'],
+            Reg::regNewUser($_POST['regEmailInput'], $_POST['regUsernameInput'],
                 $_POST['regPassInput'], $_POST['regPassControlInput']);
-            header('Location: /');
+            $this->redirect('/');
         } catch(RegException $e) {
             $error = $e->error;
             return new View('reg', ['error' => $error]);
         }
         return 0;
-
     }
 
-    public static function loadUserProfile()
+    public function loadUserProfile()
     {
-
         parent::checkUserAuth();
 
         $data['id'] = $_SESSION['userId'];
@@ -59,12 +55,10 @@ class UserController extends Controller {
         }
 
         return new View('profile', $data);
-
     }
 
-    public static function loadUserProfileToEdit()
+    public function loadUserProfileToEdit()
     {
-
         parent::checkUserAuth();
 
         $data['id'] = $_SESSION['userId'];
@@ -76,17 +70,15 @@ class UserController extends Controller {
         }
 
         return new View('profile-edit', $data);
-
     }
 
-    public static function updateUserProfile()
+    public function updateUserProfile()
     {
-
         parent::checkUserAuth();
 
         $userManager = new UserManager();
 
-        $answer = [];
+        $error = [];
 
         if (isset($_POST['about'])) {
             $about = clean($_POST['about']);
@@ -95,66 +87,58 @@ class UserController extends Controller {
             }
         }
 
-
         if (!empty($_FILES['avatar']['name'])) {
             $fileTypes = ["image/jpeg", "image/png"];
 
             if ($_FILES['avatar']['error'] !== UPLOAD_ERR_OK) {
-                $answer['error']['errorAvatar'] = "Внутрення ошибка сервера. Код ошибки:" . $_FILES['avatar']['error'];
+                $error['errorAvatar'] = "Внутрення ошибка сервера. Код ошибки:" . $_FILES['avatar']['error'];
+                throw new JsonException($error);
             }
             elseif (!in_array($_FILES['avatar']['type'], $fileTypes))
             {
-                $answer['error']['errorAvatar'] = "Ошибка: неверный формат файла! Разрешены:" . implode(" ", $fileTypes) . ". Файл " . $_FILES['avatar']['name'] . " не картинка!";
+                $error['errorAvatar'] = "Ошибка: неверный формат файла! Разрешены:" . implode(" ", $fileTypes) . ". Файл " . $_FILES['avatar']['name'] . " не картинка!";
+                throw new JsonException($error);
             }
             elseif ($_FILES['avatar']['size'] > 2*1e6) {
-                $answer['error']['errorAvatar'] = "Ошибка: Максимальный размер файла 2Мб. Файл " . $_FILES['avatar']['name'] . " слишком большого размера!";
+                $error['errorAvatar'] = "Ошибка: Максимальный размер файла 2Мб. Файл " . $_FILES['avatar']['name'] . " слишком большого размера!";
+                throw new JsonException($error);
             }
 
-            if (!isset($answer['error'])) {
-                $dirname = $_SERVER['DOCUMENT_ROOT'] . '/img/avatars';
-                $tmpname = $_FILES['avatar']['tmp_name'];
-                $name = 'avatar' . $_SESSION['userId'] . mb_substr($_FILES['avatar']['name'], -4, 4);
-                move_uploaded_file($tmpname, "$dirname/$name");
-                $link = '/img/avatars/' . $name;
-                $userManager->setUserAvatar($_SESSION['userId'], $link);
-            }
+
+
+            $dirname = $_SERVER['DOCUMENT_ROOT'] . '/img/avatars';
+            $tmpname = $_FILES['avatar']['tmp_name'];
+            $name = 'avatar' . $_SESSION['userId'] . mb_substr($_FILES['avatar']['name'], -4, 4);
+            $link = '/img/avatars/' . $name;
+            $userManager->setUserAvatar($_SESSION['userId'], $link);
+            move_uploaded_file($tmpname, "$dirname/$name");
         }
 
-        if (!isset($answer['error'])) {
-            $answer['ok'] = true;
-            echo json_encode($answer);
-        } else {
-            echo json_encode($answer);
-        }
-
+        return new JsonResponse(['result' => 'success']);
     }
 
-    public static function subscribeUserOn()
+    public function subscribeUserOn()
     {
-
         parent::checkUserAuth();
 
         $subscribeManager = new SubscribeManager();
         $subscribeManager->subscribeUserOn($_SESSION['userId']);
 
-        header("HTTP/1.0 200 OK");
-
+        return new JsonResponse(['result' => 'success']);
     }
 
-    public static function subscribeUserOff()
+    public function subscribeUserOff()
     {
-
         parent::checkUserAuth();
 
         $subscribeManager = new SubscribeManager();
         $subscribeManager->subscribeUserOff($_SESSION['userId']);
 
-        header("HTTP/1.0 200 OK");
+        return new JsonResponse(['result' => 'success']);
     }
 
-    public static function loadUserInfoAdmin()
+    public function loadUserInfoAdmin()
     {
-
         parent::checkAdminRights();
 
         $data = [];
@@ -176,31 +160,25 @@ class UserController extends Controller {
         }
 
         return new View('admin.users.userInfo', $data);
-
     }
 
-    public static function updateUserRole()
+    public function updateUserRole()
     {
-
         parent::checkAdminRights();
 
         $userManager = new UserManager();
         $userManager->setUserRole($_GET['id'], $_GET['role']);
 
-        header("HTTP/1.0 200 OK");
-
+        return new JsonResponse(['result' => 'success']);
     }
 
-    public static function deleteUser()
+    public function deleteUser()
     {
-
         parent::checkAdminRights();
 
         $userManager = new UserManager();
         $userManager->deleteUser($_GET['id']);
 
-        header("HTTP/1.0 200 OK");
-
+        return new JsonResponse(['result' => 'success']);
     }
-
 }
